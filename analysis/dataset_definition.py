@@ -24,7 +24,7 @@ dataset.cause_of_death = last_ons_death.cause_of_death_01 #cause of death
 
 #import ethnicity codelist
 ethnicity_codelist = codelist_from_csv(
-    "codelists/nhsd-primary-care-domain-refsets-ethnall_cod-20210127.csv",
+    "codelists/opensafely-ethnicity-snomed-0removed-2e641f61.csv",
     column="snomedcode",
     category_column="Grouping_6",
 )
