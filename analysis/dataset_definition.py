@@ -5,6 +5,8 @@ from ehrql import codelist_from_csv
 
 dataset = create_dataset()
 
+dataset.configure_dummy_data(population_size=1000)
+
 dataset.define_population(patients.date_of_birth.is_on_or_before("1999-12-31")) #get patients after certain date
 
 dataset.age = patients.age_on("2019-09-01") #get patients age on defined date
@@ -38,7 +40,7 @@ dataset.latest_ethnicity_code = (
     .snomedct_code
 )
 #assign this code to a category
-latest_ethnicity_group = dataset.latest_ethnicity_code.to_category( 
+dataset.latest_ethnicity_group = dataset.latest_ethnicity_code.to_category( 
     ethnicity_codelist
 )
 
