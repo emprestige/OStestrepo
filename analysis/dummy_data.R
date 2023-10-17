@@ -106,5 +106,6 @@ dummydata_processed <- dummydata %>%
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
+
 fs::dir_create(here("lib", "dummydata"))
 write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput.arrow"))
