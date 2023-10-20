@@ -23,16 +23,16 @@ population_size <- 1000
 
 #define index date and study start date 
 index_date <- as.Date("2022-01-01")
-studystart_date <- as.Date("2016-01-03")
+# studystart_date <- as.Date("2016-01-03")
 
 #define index day and study start day
 index_day <- 0L
-studystart_day <- as.integer(studystart_date - index_date)
+# studystart_day <- as.integer(studystart_date - index_date)
 
 #define known variables
 known_variables <- c(
-  "index_date", "studystart_date",
-  "index_day", "studystart_day"
+  "index_date", 
+  "index_day" 
 )
 
 #define a list which will contain all of the variables to be simulated
@@ -61,7 +61,7 @@ sim_list = lst(
   
   #whether the participant has diabetes or not 
   diabetes = bn_node(
-    ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == 'F')*-0.2))*1
+    ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))*1
   ),
   
   #region the patient lives in 
@@ -91,26 +91,26 @@ sim_list = lst(
   
   #rurality classification
   rural_urban = bn_node(
-    ~ runif(n = ..n, min = 1, max = 8)
+    ~ as.integer(runif(n = ..n, min = 1, max = 8))
   ),
   
   ##exposures
   
   #index of multiple deprivation
   IMD = bn_node(
-    ~ runif(n = ..n, min = 1, max = 32800)
+    ~ as.integer(runif(n = ..n, min = 1, max = 32800))
   ),
   
   #ethnicity (group 6)
-  latest_ethnicty_code = bn_node(
+  latest_ethnicity_code = bn_node(
     ~ rfactor(n = ..n, levels = c(
-      1, 
-      2,
-      3,
-      4,
-      5,
-      6
-    ), p = 0.1, 0.04, 0.03, 0.02, 0.81, 0)
+      "1", 
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+    ), p = c(0.81, 0.03, 0.1, 0.04, 0.02, 0))
   ),
   
   #number of people in household
@@ -120,9 +120,8 @@ sim_list = lst(
   
   #household ID (to determine composition)
   pseudo_id = bn_node(
-    ~ as.integer(rnormTrunc, n = ..n, mean = 500, sd = 500)
+    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
   )
-  
 )
 
 bn <- bn_create(sim_list, known_variables = known_variables)
@@ -142,12 +141,14 @@ dummydata_processed <- dummydata %>%
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
-dummydata_processed$latest_ethnicity_group <- ifelse(dummydata_processed$latest_ethnicity_code == 1, "White",
-                                              ifelse(dummydata_processed$latest_ethnicity_code == 2, "Mixed",
-                                              ifelse(dummydata_processed$latest_ethnicity_code == 3, "Asian or Asian British",
-                                              ifelse(dummydata_processed$latest_ethnicity_code == 4, "Black or Black British",
-                                              ifelse(dummydata_processed$latest_ethnicity_code == 5, "Other Ethnic Groups",
-                                              ifelse(dummydata_processed$latest_ethnicity_code == 6, "Unknown"))))))
+dummydata_processed <- dummydata_processed %>%
+  mutate(
+    latest_ethnicity_group = ifelse(dummydata_processed$latest_ethnicity_code == "1", "White",
+                             ifelse(dummydata_processed$latest_ethnicity_code == "2", "Mixed",
+                             ifelse(dummydata_processed$latest_ethnicity_code == "3", "Asian or Asian British",
+                             ifelse(dummydata_processed$latest_ethnicity_code == "4", "Black or Black British",
+                             ifelse(dummydata_processed$latest_ethnicity_code == "5", "Other Ethnic Groups", "Unknown"))))
+))
 
 fs::dir_create(here("lib", "dummydata"))
 write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput.arrow"))

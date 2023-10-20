@@ -62,8 +62,8 @@ dataset.latest_ethnicity_group = dataset.latest_ethnicity_code.to_category(
 #     default="unknown"
 # )
 
-#get rural/urban classification
-dataset.rural_urban = addresses.for_patient_on("2023-01-01").rural_urban_classification
+# #get rural/urban classification
+# dataset.rural_urban = addresses.for_patient_on("2023-01-01").rural_urban_classification
 
 # #get patietns practice's pseudonymised identifier
 # dataset.practice = practice_registrations.for_patient_on(index_date).practice_pseudo_id
