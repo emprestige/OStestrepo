@@ -4,6 +4,7 @@ library("tidyverse")
 library("arrow")
 library("here")
 library("glue")
+library("EnvStats")
 
 remotes::install_github("https://github.com/wjchulme/dd4d")
 library("dd4d")
@@ -50,13 +51,13 @@ sim_list = lst(
   
   #age of the patient 
   age = bn_node(
-    ~ as.integer(rnorm(n = ..n, mean = 60, sd = 14)),
+    ~ as.integer(rnormTrunc(n = ..n, mean = 60, sd = 14, min = 65)),
   ),
   
-  # #sustainability transformation partnership code (here a pseudocode just represented by a number)
-  # stp = bn_node(
-  #   ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36),
-  # ),
+  #sustainability transformation partnership code (here a pseudocode just represented by a number)
+  stp = bn_node(
+    ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36),
+  ),
   
   #whether the participant has diabetes or not 
   diabetes = bn_node(
@@ -65,7 +66,7 @@ sim_list = lst(
   
   #region the patient lives in 
   region = bn_node(
-    variable_formula = ~ rfactor(n = ..n, levels = c(
+    ~ rfactor(n = ..n, levels = c(
       "North East",
       "North West",
       "Yorkshire and The Humber",
@@ -78,15 +79,50 @@ sim_list = lst(
     ), p = c(0.2, 0.2, 0.3, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05)),
   ),
   
-  end_date = bn_node(
-    ~ "2023-03-01", keep = FALSE
-  ),
+  # end_date = bn_node(
+  #   ~ "2023-03-01", keep = FALSE
+  # ),
   
   #day of death for patient (want most to be alive) 
   death_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 2000)),
     missing_rate = ~ 0.99
+  ),
+  
+  #rurality classification
+  urban_rural = bn_node(
+    ~ runif(n = ..n, min = 1, max = 8)
+  ),
+  
+  ##exposures
+  
+  #index of multiple deprivation
+  IMD = bn_node(
+    ~ runif(n = ..n, min = 1, max = 32800)
+  ),
+  
+  #ethnicity (group 6)
+  ethnicty = bn_node(
+    ~ rfactor(n = ..n, levels = c(
+      "Asian",
+      "Black",
+      "Mixed",
+      "Other",
+      "White",
+      "Unknown"
+    ), p = 0.1, 0.04, 0.03, 0.02, 0.81, 0)
+  ),
+  
+  #number of people in household
+  household_size = bn_node(
+    ~ as.integer(rnormTrunc(n = ..n, mean = 2, sd = 3, min = 0))
+  ),
+  
+  #household ID (to determine composition)
+  pseudo_id = bn_node(
+    ~ as.integer(rnormTrunc, n = ..n, mean = 500, sd = 500)
   )
+  
 )
 
 bn <- bn_create(sim_list, known_variables = known_variables)
