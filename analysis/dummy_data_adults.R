@@ -90,7 +90,7 @@ sim_list = lst(
   ),
   
   #rurality classification
-  urban_rural = bn_node(
+  rural_urban = bn_node(
     ~ runif(n = ..n, min = 1, max = 8)
   ),
   
@@ -102,14 +102,14 @@ sim_list = lst(
   ),
   
   #ethnicity (group 6)
-  ethnicty = bn_node(
+  latest_ethnicty_code = bn_node(
     ~ rfactor(n = ..n, levels = c(
-      "Asian",
-      "Black",
-      "Mixed",
-      "Other",
-      "White",
-      "Unknown"
+      1, 
+      2,
+      3,
+      4,
+      5,
+      6
     ), p = 0.1, 0.04, 0.03, 0.02, 0.81, 0)
   ),
   
@@ -142,6 +142,12 @@ dummydata_processed <- dummydata %>%
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
+dummydata_processed$latest_ethnicity_group <- ifelse(dummydata_processed$latest_ethnicity_code == 1, "White",
+                                              ifelse(dummydata_processed$latest_ethnicity_code == 2, "Mixed",
+                                              ifelse(dummydata_processed$latest_ethnicity_code == 3, "Asian or Asian British",
+                                              ifelse(dummydata_processed$latest_ethnicity_code == 4, "Black or Black British",
+                                              ifelse(dummydata_processed$latest_ethnicity_code == 5, "Other Ethnic Groups",
+                                              ifelse(dummydata_processed$latest_ethnicity_code == 6, "Unknown"))))))
 
 fs::dir_create(here("lib", "dummydata"))
 write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput.arrow"))
