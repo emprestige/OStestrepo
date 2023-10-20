@@ -26,7 +26,7 @@ dataset.sex = patients.sex
 dataset.age = patients.age_on(index_date)
 
 last_ons_death = ons_deaths.sort_by(ons_deaths.date).first_for_patient() #get death records for patients
-dataset.date_of_death = last_ons_death.date #date of death
+dataset.death_date = last_ons_death.date #date of death
 
 #import ethnicity codelist
 ethnicity_codelist = codelist_from_csv(
@@ -44,28 +44,20 @@ dataset.latest_ethnicity_code = (
     .snomedct_code
 )
 
-#assign this code to a category
-dataset.latest_ethnicity_group = dataset.latest_ethnicity_code.to_category(
-    ethnicity_codelist
-)
-
-# #get patients IMD rank
-# dataset.imd = addresses.for_patient_on("2023-01-01").imd_rounded
-#
-# #calculate IMD quintile
-# dataset.imd_quintile = case(
-#     when((dataset.imd >=0) & (dataset.imd < int(32844 * 1 / 5))).then("1 (most deprived)"),
-#     when(dataset.imd < int(32844 * 2 / 5)).then("2"),
-#     when(dataset.imd < int(32844 * 3 / 5)).then("3"),
-#     when(dataset.imd < int(32844 * 4 / 5)).then("4"),
-#     when(dataset.imd < int(32844 * 5 / 5)).then("5 (least deprived)"),
-#     default="unknown"
+# #assign this code to a category
+# dataset.latest_ethnicity_group = dataset.latest_ethnicity_code.to_category(
+#     ethnicity_codelist
 # )
 
-# #get rural/urban classification
-# dataset.rural_urban = addresses.for_patient_on("2023-01-01").rural_urban_classification
+#get patients IMD rank
+dataset.imd_rounded = addresses.for_patient_on(index_date).imd_rounded
+
+
+#get rural/urban classification
+dataset.rural_urban_classification = addresses.for_patient_on(index_date).rural_urban_classification
 
 # #get patietns practice's pseudonymised identifier
 # dataset.practice = practice_registrations.for_patient_on(index_date).practice_pseudo_id
 
 dataset.region = registered_patients.practice_nuts1_region_name
+dataset.stp = registered_patients.practice_stp
