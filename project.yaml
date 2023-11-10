@@ -14,10 +14,24 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/input.arrow
+        
+  summarise_dataset:
+    run: python:latest analysis/summarise_dataset.py
+    needs: [generate_dataset]
+    outputs:
+      moderately_sensitive:
+        cohort: output/summary.txt
+        
+  manipulate_dataset:
+    run: r:latest analysis/data_manipulation.R
+    needs: [generate_dataset]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_manipulated.arrow
 
   # describe:
   #   run: r:latest analysis/report.R
-  #   needs: [generate_dataset]
+  #   needs: [generate_dataset, manipulate_dataset]
   #   outputs: 
   #     moderately_sensitive:
   #       cohort: output/descriptive.png

@@ -113,6 +113,16 @@ sim_list = lst(
     ), p = c(0.81, 0.03, 0.1, 0.04, 0.02, 0))
   ),
   
+  #smoking status
+  most_recent_smoking_code = bn_node(
+    ~ rfactor(n = ..n, levels = c(
+      "S", #smoker
+      "E", #ever-smoked
+      "N", #never smoked
+      "M" #missing
+    ), p = c(0.1, 0.2, 0.7, 0))
+  ),
+  
   #number of people in household
   household_size = bn_node(
     ~ as.integer(rnormTrunc(n = ..n, mean = 2, sd = 3, min = 0))
