@@ -17,6 +17,12 @@
       "url": "https://www.opencodelists.org/codelist/opensafely/smoking-unclear/2020-04-29/",
       "downloaded_at": "2021-02-04 12:09:46.057508Z",
       "sha": "d9dad3e9d9491f765863b2617114c521957b6db1"
+    },
+    "nhsd-primary-care-domain-refsets-ast_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/ast_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/ast_cod/20210127/",
+      "downloaded_at": "2023-11-13 15:00:27.476969Z",
+      "sha": "662adcbaa8823de22b7f56175420e454da595177"
     }
   }
 }

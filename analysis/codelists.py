@@ -57,12 +57,11 @@ unclear_smoking_codes = codelist_from_csv(
 #     column="CTV3ID",
 # )
 # 
-# # Asthma diagnosis
-# asthma_codes = codelist_from_csv(
-#     "codelists/opensafely-asthma-diagnosis.csv",
-#     system="ctv3",
-#     column="CTV3ID",
-# )
+# Asthma diagnosis
+asthma_codelist = codelist_from_csv(
+    "codelists/nhsd-primary-care-domain-refsets-ast_cod.csv",
+    column="code",
+)
 # 
 # # Blood pressure
 # systolic_blood_pressure_codes = codelist(

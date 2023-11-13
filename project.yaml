@@ -5,6 +5,12 @@ expectations:
 
 actions:
 
+  # generate_dummy_data:
+  #   run: r:latest analysis/dummy_data_adults.R
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: lib/dummydata/dummyinput.arrow
+
   generate_dataset:
     run: >
       ehrql:v0 

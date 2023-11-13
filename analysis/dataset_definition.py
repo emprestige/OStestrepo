@@ -13,7 +13,7 @@ import codelists
 
 dataset = Dataset()
 
-index_date = "2022-01-01"
+index_date = "2023-10-01"
 
 #get patients who are registered
 registered_patients = practice_registrations.for_patient_on(index_date)
@@ -77,3 +77,12 @@ dataset.most_recent_smoking_code = (
     .last_for_patient()
     .ctv3_code
 )
+
+comorbidity_date = "2020-10-01"
+
+#recent asthma diagnosis
+dataset.has_recent_asthma_diagnosis = clinical_events.where(
+        clinical_events.snomedct_code.is_in(codelists.asthma_codelist)
+).where(
+        clinical_events.date.is_on_or_between(comorbidity_date, index_date)
+).exists_for_patient()
