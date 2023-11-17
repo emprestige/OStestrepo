@@ -5,7 +5,7 @@ library("ggplot2")
 library("data.table")
 
 df_input <- read_feather(
-    here::here("output", "input_manipulated.arrow"))
+    here::here("output", "input_manipulated_adults.arrow"))
 
 # plot_age <- ggplot(data = df_input, aes(age)) + geom_histogram()
 

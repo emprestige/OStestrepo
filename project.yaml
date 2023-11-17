@@ -14,26 +14,26 @@ actions:
   generate_dataset:
     run: >
       ehrql:v0 
-        generate-dataset analysis/dataset_definition.py
-        --output output/input.arrow
-        --dummy-data-file lib/dummydata/dummyinput.arrow
+        generate-dataset analysis/dataset_definition_adults.py
+        --output output/input_adults.arrow
+        --dummy-data-file lib/dummydata/dummyinput_adults.arrow
     outputs:
       highly_sensitive:
-        cohort: output/input.arrow
+        cohort: output/input_adults.arrow
         
   summarise_dataset:
-    run: python:latest analysis/summarise_dataset.py
+    run: python:latest analysis/summarise_dataset_adults.py
     needs: [generate_dataset]
     outputs:
       moderately_sensitive:
-        cohort: output/summary.txt
+        cohort: output/summary_adults.txt
         
   manipulate_dataset:
-    run: r:latest analysis/data_manipulation.R
+    run: r:latest analysis/data_manipulation_adults.R
     needs: [generate_dataset]
     outputs:
       highly_sensitive:
-        cohort: output/input_manipulated.arrow
+        cohort: output/input_manipulated_adults.arrow
 
   # describe:
   #   run: r:latest analysis/report.R

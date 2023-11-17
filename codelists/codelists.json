@@ -23,6 +23,78 @@
       "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/ast_cod/20210127/",
       "downloaded_at": "2023-11-13 15:00:27.476969Z",
       "sha": "662adcbaa8823de22b7f56175420e454da595177"
+    },
+    "opensafely-asthma-inhaler-steroid-medication.csv": {
+      "id": "opensafely/asthma-inhaler-steroid-medication/2020-04-15",
+      "url": "https://www.opencodelists.org/codelist/opensafely/asthma-inhaler-steroid-medication/2020-04-15/",
+      "downloaded_at": "2023-11-14 09:53:22.863743Z",
+      "sha": "83c3d107e928ee44a8a20aab69852d35c40c4b7d"
+    },
+    "user-angel-wong-hazardous-drinking.csv": {
+      "id": "user/angel-wong/hazardous-drinking/3c786eff",
+      "url": "https://www.opencodelists.org/codelist/user/angel-wong/hazardous-drinking/3c786eff/",
+      "downloaded_at": "2023-11-15 13:06:14.310622Z",
+      "sha": "7b7714a8b188c75e744b3bf9f6efb074ea292dc9"
+    },
+    "nhsd-primary-care-domain-refsets-illsub_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/illsub_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/illsub_cod/20210127/",
+      "downloaded_at": "2023-11-15 13:51:35.159412Z",
+      "sha": "31aeef3b18f2715d628d252ec94f8ba88f72c433"
+    },
+    "nhsd-primary-care-domain-refsets-illsubint_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/illsubint_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/illsubint_cod/20210127/",
+      "downloaded_at": "2023-11-15 13:51:35.326164Z",
+      "sha": "6b68ac82989ca3db741e03e9ea2947ae7581915e"
+    },
+    "nhsd-primary-care-domain-refsets-illsubassdec_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/illsubassdec_cod/20200812",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/illsubassdec_cod/20200812/",
+      "downloaded_at": "2023-11-15 13:51:35.569336Z",
+      "sha": "027e4593f9bfedcebd5c1f6119cc483648c4812c"
+    },
+    "nhsd-primary-care-domain-refsets-copd_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/copd_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/copd_cod/20210127/",
+      "downloaded_at": "2023-11-15 14:14:29.093073Z",
+      "sha": "5d08ae3a50efe6a5fa54806e9ffce16d14ba9955"
+    },
+    "nhsd-primary-care-domain-refsets-hyp_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/hyp_cod/20200812",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/hyp_cod/20200812/",
+      "downloaded_at": "2023-11-15 15:37:52.848016Z",
+      "sha": "00fdd3723042b0752e5f5131faf3a60756e07e16"
+    },
+    "nhsd-primary-care-domain-refsets-dmtype1_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/dmtype1_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/dmtype1_cod/20210127/",
+      "downloaded_at": "2023-11-15 15:37:53.141863Z",
+      "sha": "23e6cb9c5555fb756c9a68295bd701b6ddb34ebd"
+    },
+    "nhsd-primary-care-domain-refsets-dmnontype1_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/dmnontype1_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/dmnontype1_cod/20210127/",
+      "downloaded_at": "2023-11-15 15:37:53.360940Z",
+      "sha": "6abf111f4d4768cca47b1385fa8d233c2bafd380"
+    },
+    "nhsd-primary-care-domain-refsets-hf_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/hf_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/hf_cod/20210127/",
+      "downloaded_at": "2023-11-15 15:37:53.555005Z",
+      "sha": "c1fdc20e835c8e00b50e4728592b79bb3e3ee887"
+    },
+    "nhsd-primary-care-domain-refsets-mi_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/mi_cod/20210127",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/mi_cod/20210127/",
+      "downloaded_at": "2023-11-15 15:37:53.966071Z",
+      "sha": "0fb41c6104328cbb930e4407078b693c59d9da9c"
+    },
+    "bristol-ild-snomed.csv": {
+      "id": "bristol/ild-snomed/2f3e3051",
+      "url": "https://www.opencodelists.org/codelist/bristol/ild-snomed/2f3e3051/",
+      "downloaded_at": "2023-11-15 15:37:54.282327Z",
+      "sha": "9e2de5190c0081e01bffef1a56aa4431885da94e"
     }
   }
 }

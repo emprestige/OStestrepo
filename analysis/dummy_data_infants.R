@@ -51,13 +51,12 @@ sim_list = lst(
   #sex of the patient
   sex = bn_node(
     ~ rfactor(n = ..n, levels = c("female", "male", "intersex", "unknown"),
-              p = c(0.51, 0.49, 0, 0)), missing_rate = ~ 0.001
+              p = c(0.51, 0.49, 0, 0)), missing_rate = ~0.001
   ),
 
   #age of the patient
   age = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 60, sd = 14, min = 65)), 
-    missing_rate = ~ 0.001
+    ~ as.integer(rnormTrunc(n = ..n, mean = 12, sd = 4, min = 0, max = 23)),
   ),
 
   #sustainability transformation partnership code (here a pseudocode just represented by a number)
@@ -65,10 +64,10 @@ sim_list = lst(
     ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36),
   ),
 
-  #whether the participant has diabetes or not
-  diabetes = bn_node(
-    ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))
-  ),
+  # #whether the participant has diabetes or not
+  # diabetes = bn_node(
+  #   ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))*1
+  # ),
 
   #region the patient lives in
   region = bn_node(
@@ -85,23 +84,31 @@ sim_list = lst(
     ), p = c(0.2, 0.2, 0.3, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05)),
   ),
 
+  # end_date = bn_node(
+  #   ~ "2023-03-01", keep = FALSE
+  # ),
+
   #day of death for patient (want most to be alive)
   death_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 2000)),
-    missing_rate = ~ 0.99
+    missing_rate = ~ 0.999
   ),
 
   #rurality classification
   rural_urban_classification = bn_node(
     ~ as.integer(runif(n = ..n, min = 1, max = 8))
   ),
+  
+  #gestational age
+  gestational_age = bn_node(
+    ~ rnorm(n = ..n, mean = 38, sd = 2)
+  ),
 
   ##exposures
 
   #index of multiple deprivation
   imd_rounded = bn_node(
-    ~ as.integer(round(runif(n = ..n, min = 0, max = 32844), digits = -2)),
-    missing_rate = ~ 0.05
+    ~ as.integer(round(runif(n = ..n, min = 0, max = 32844), digits = -2))
   ),
 
   #ethnicity (group 6)
@@ -126,10 +133,15 @@ sim_list = lst(
     ~ calculate_household_sizes(household_pseudo_id)
   ),
   
-  ##comorbidities
-
+  ##maternal characteristics
+  
+  #age 
+  maternal_age = bn_node(
+    ~ rnorm(n = ..n, mean = 30, sd = 5)
+  ),
+  
   #smoking status
-  most_recent_smoking_code = bn_node(
+  maternal_smoking_code = bn_node(
     ~ rfactor(n = ..n, levels = c(
       "S", #smoker
       "E", #ever-smoked
@@ -139,59 +151,23 @@ sim_list = lst(
   ),
   
   #drinking 
-  hazardous_drinking = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1),
-  ),
-  
-  #drug usage
-  drug_usage = bn_node(
+  maternal_drinking = bn_node(
     ~ rbernoulli(n = ..n, p = 0.05),
   ),
   
-  #has asthma 
-  has_asthma = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.2)
-  ),
-  
-  #copd
-  has_copd = bn_node(
-    ~ rbernoulli(n = ..n, p = plogis(-1 + I(most_recent_smoking_code == "S")*-0.5 +
-                                       I(most_recent_smoking_code == "E")*-0.1))
-  ),
-  
-  #pulmonary fibrosis
-  has_pulmonary_fibrosis = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.001)
-  ),
-  
-  #hypertension
-  has_hypertension = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.2)
-  ),
-  
-  #diabetes
-  has_diabetes = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1)
-  ),
-  
-  #heart failure
-  has_heart_failure = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.015)
-  ),
-  
-  #myocardial infarction
-  has_prior_mi = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1)
+  #drug usage
+  maternal_drug_usage = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01),
   ),
   
   #flu vaccination
-  flu_vaccination = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.75)
+  maternal_flu_vaccination = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.4) #vary over ethnicity
   ),
   
-  #covid vaccination
-  covid_vaccination = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.65)
+  #pertussis vaccination
+  maternal_pertussis_vaccination = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.5) #vary over ethnicity
   )
   
 )
@@ -206,8 +182,11 @@ set.seed(10)
 dummydata <- bn_simulate(bn, pop_size = population_size, keep_all = FALSE, .id = "patient_id")
 
 dummydata_processed <- dummydata %>%
+  #convert logical to integer as study defs output 0/1 not TRUE/FALSE
+  #mutate(across(where(is.logical), ~ as.integer(.))) %>%
+  #convert integer days to dates since index date and rename vars
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
 fs::dir_create(here("lib", "dummydata"))
-write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_adults.arrow"))
+write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_infants.arrow"))

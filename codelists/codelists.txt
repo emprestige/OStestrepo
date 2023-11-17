@@ -2,3 +2,15 @@ opensafely/ethnicity-snomed-0removed/2e641f61
 opensafely/smoking-clear/2020-04-29
 opensafely/smoking-unclear/2020-04-29
 nhsd-primary-care-domain-refsets/ast_cod/20210127
+opensafely/asthma-inhaler-steroid-medication/2020-04-15
+user/angel-wong/hazardous-drinking/3c786eff
+nhsd-primary-care-domain-refsets/illsub_cod/20210127
+nhsd-primary-care-domain-refsets/illsubint_cod/20210127
+nhsd-primary-care-domain-refsets/illsubassdec_cod/20200812
+nhsd-primary-care-domain-refsets/copd_cod/20210127
+nhsd-primary-care-domain-refsets/hyp_cod/20200812
+nhsd-primary-care-domain-refsets/dmtype1_cod/20210127
+nhsd-primary-care-domain-refsets/dmnontype1_cod/20210127
+nhsd-primary-care-domain-refsets/hf_cod/20210127
+nhsd-primary-care-domain-refsets/mi_cod/20210127
+bristol/ild-snomed/2f3e3051

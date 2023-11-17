@@ -5,7 +5,7 @@ library("ggplot2")
 library("data.table")
 
 df_input <- read_feather(
-  here::here("output", "input.arrow"))
+  here::here("output", "input_infants.arrow"))
 
 #assign ethnicity group
 df_input <- df_input %>%
@@ -20,15 +20,22 @@ df_input <- df_input %>%
 #calculate age bands
 df_input <- df_input %>%
   mutate(age_band = case_when(
-    df_input$age >= 60 & df_input$age <= 64 ~ "60-64",
-    df_input$age >= 65 & df_input$age <= 69 ~ "65-69",
-    df_input$age >= 70 & df_input$age <= 74 ~ "70-74",
-    df_input$age >= 75 & df_input$age <= 79 ~ "75-79",
-    df_input$age >= 80 & df_input$age <= 84 ~ "80-84",
-    df_input$age >= 85 & df_input$age <= 89 ~ "85-89",
-    df_input$age >= 90 ~ "90+",
+    df_input$age >= 0 & df_input$age <= 2 ~ "0-2m",
+    df_input$age >= 3 & df_input$age <= 5 ~ "3-5m",
+    df_input$age >= 6 & df_input$age <= 11 ~ "6-11m",
+    df_input$age >= 12 & df_input$age <= 23 ~ "12-23m",
     TRUE ~ NA_character_
   ))
+
+# #calculate gestational age bands
+# df_input <- df_input %>%
+#   mutate(gestational_age_band = case_when(
+#     df_input$gestational_age < 35 ~ "<35w",
+#     df_input$gestational_age >= 35 & df_input$gestational_age <= 36 ~ "35-36w",
+#     df_input$gestational_age >= 37 & df_input$gestational_age <= 40 ~ "37-40w",
+#     df_input$gestational_age >= 41 ~ ">=41w",
+#     TRUE ~ NA_character_
+#   ))
 
 #calculate IMD quintile
 df_input <- df_input %>%
@@ -42,4 +49,4 @@ df_input <- df_input %>%
   ))
 
 #write the new input file
-write_feather(df_input, here::here("output", "input_manipulated.arrow"))
+write_feather(df_input, here::here("output", "input_manipulated_adults.arrow"))
