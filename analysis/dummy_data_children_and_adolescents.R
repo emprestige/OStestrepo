@@ -56,18 +56,13 @@ sim_list = lst(
 
   #age of the patient
   age = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 60, sd = 14, min = 65)), 
+    ~ as.integer(rnormTrunc(n = ..n, mean = 60, sd = 14, min = 5, max = 17)), 
     missing_rate = ~ 0.001
   ),
 
   #sustainability transformation partnership code (here a pseudocode just represented by a number)
   stp = bn_node(
     ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36),
-  ),
-
-  #whether the participant has diabetes or not
-  diabetes = bn_node(
-    ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))
   ),
 
   #region the patient lives in
@@ -127,62 +122,21 @@ sim_list = lst(
   ),
   
   ##comorbidities
-
-  #smoking status
-  most_recent_smoking_code = bn_node(
-    ~ rfactor(n = ..n, levels = c(
-      "S", #smoker
-      "E", #ever-smoked
-      "N", #never smoked
-      "M" #missing
-    ), p = c(0.1, 0.2, 0.7, 0))
-  ),
-  
-  #drinking 
-  hazardous_drinking = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1),
-  ),
-  
-  #drug usage
-  drug_usage = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.05),
-  ),
   
   #has asthma 
   has_asthma = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.2)
+    ~ rbernoulli(n = ..n, p = 0.15)
   ),
   
-  #copd
-  has_copd = bn_node(
-    ~ rbernoulli(n = ..n, p = plogis(-1 + I(most_recent_smoking_code == "S")*-0.5 +
-                                       I(most_recent_smoking_code == "E")*-0.1))
+  #has reactive airway disease
+  has_reactive_airway = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.05)
   ),
   
-  #pulmonary fibrosis
-  has_pulmonary_fibrosis = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.001)
-  ),
-  
-  #hypertension
-  has_hypertension = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.2)
-  ),
-  
-  #diabetes
-  has_diabetes = bn_node(
-    ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))
-  ),
-  
-  #heart failure
-  has_heart_failure = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.015)
-  ),
-  
-  #myocardial infarction
-  has_prior_mi = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.1)
-  ),
+  # #diabetes
+  # has_diabetes = bn_node(
+  #   ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))
+  # ),
   
   #flu vaccination
   flu_vaccination = bn_node(
@@ -210,4 +164,4 @@ dummydata_processed <- dummydata %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
 fs::dir_create(here("lib", "dummydata"))
-write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_adults.arrow"))
+write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_children_and_adolescents.arrow"))
