@@ -16,14 +16,13 @@ dataset = Dataset()
 
 index_date = "2023-10-01"
 
-# dob = patients.date_of_birth
-# days_old = (index_date - dob).days
-# months_old = (days_old/365)*12
+age_months = (index_date - patients.date_of_birth).months
+age_at_start = ("2016-03-01" - patients.date_of_birth).months
 
 #get patients who are registered, have sex, age, and imd info
 registered_patients = (practice_registrations.for_patient_on(index_date)).exists_for_patient()
 is_female_or_male = patients.sex.is_in(["female", "male"])
-is_appropriate_age = patients.date_of_birth.is_on_or_before(index_date)
+is_appropriate_age = (age_at_start <= 23)
 has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
 
 #define population
@@ -37,7 +36,7 @@ dataset.define_population(
 #registration, sex and age 
 dataset.registered = registered_patients
 dataset.sex = patients.sex
-dataset.age = patients.age_on(index_date)
+dataset.age = age_months
 
 #last_ons_death = ons_deaths.sort_by(ons_deaths.date).first_for_patient() #get death records for patients
 dataset.death_date = ons_deaths.date #date of death
