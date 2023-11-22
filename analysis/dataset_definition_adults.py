@@ -14,7 +14,7 @@ import codelists
 
 dataset = Dataset()
 
-index_date = "2023-10-01"
+index_date = "2023-10-31"
 
 age_at_start = patients.age_on("2016-03-01")
 age_at_end = patients.age_on(index_date)
