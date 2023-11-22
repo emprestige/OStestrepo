@@ -49,4 +49,4 @@ df_input <- df_input %>%
   ))
 
 #write the new input file
-write_feather(df_input, here::here("output", "input_manipulated_adults.arrow"))
+write_feather(df_input, here::here("output", "input_manipulated_infants.arrow"))

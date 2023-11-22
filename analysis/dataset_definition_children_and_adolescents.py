@@ -15,13 +15,14 @@ dataset = Dataset()
 
 index_date = "2023-10-01"
 
+age_at_start = patients.age_on("2016-03-01")
+age_at_end = patients.age_on(index_date)
+
 #get patients who are registered, have sex, age, and imd info
 registered_patients = (practice_registrations.for_patient_on(index_date)).exists_for_patient()
 is_female_or_male = patients.sex.is_in(["female", "male"])
-is_appropriate_age = (patients.age_on("2020-10-01") >= 65) & (
-  patients.age_on("2020-10-01") <= 110
-)
-has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
+is_appropriate_age = (age_at_start <= 17) & (age_at_end >= 2)
+has_imd = addresses.for_patient_on(index_date).imd_rounded.is_not_null()
 
 #define population
 dataset.define_population(

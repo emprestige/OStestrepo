@@ -64,11 +64,6 @@ sim_list = lst(
     ~ factor(as.integer(runif(n = ..n, 1, 36)), levels = 1:36),
   ),
 
-  # #whether the participant has diabetes or not
-  # diabetes = bn_node(
-  #   ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))*1
-  # ),
-
   #region the patient lives in
   region = bn_node(
     ~ rfactor(n = ..n, levels = c(
@@ -84,9 +79,10 @@ sim_list = lst(
     ), p = c(0.2, 0.2, 0.3, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05)),
   ),
 
-  # end_date = bn_node(
-  #   ~ "2023-03-01", keep = FALSE
-  # ),
+  #practice ID
+  practice_pseudo_id = bn_node(
+    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+  ),
 
   #day of death for patient (want most to be alive)
   death_day = bn_node(
@@ -133,8 +129,18 @@ sim_list = lst(
     ~ calculate_household_sizes(household_pseudo_id)
   ),
   
+  #family ID for baby
+  baby_id = bn_node(
+    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+  ),
+  
   ##maternal characteristics
   
+  #matching family ID for mother
+  mother_id = bn_node(
+    ~ baby_id,
+  ),
+    
   #age 
   maternal_age = bn_node(
     ~ rnorm(n = ..n, mean = 30, sd = 5)
@@ -182,9 +188,6 @@ set.seed(10)
 dummydata <- bn_simulate(bn, pop_size = population_size, keep_all = FALSE, .id = "patient_id")
 
 dummydata_processed <- dummydata %>%
-  #convert logical to integer as study defs output 0/1 not TRUE/FALSE
-  #mutate(across(where(is.logical), ~ as.integer(.))) %>%
-  #convert integer days to dates since index date and rename vars
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 

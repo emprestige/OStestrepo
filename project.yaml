@@ -11,64 +11,64 @@ actions:
   #     highly_sensitive:
   #       cohort: lib/dummydata/dummyinput.arrow
 
-# # Adults 
-# 
-#   generate_dataset_adults:
-#     run: >
-#       ehrql:v0 
-#         generate-dataset analysis/dataset_definition_adults.py
-#         --output output/input_adults.arrow
-#         --dummy-data-file lib/dummydata/dummyinput_adults.arrow
-#     outputs:
-#       highly_sensitive:
-#         cohort: output/input_adults.arrow
-#         
-#   summarise_dataset_adults:
-#     run: python:latest analysis/summarise_dataset_adults.py
-#     needs: [generate_dataset_adults]
-#     outputs:
-#       moderately_sensitive:
-#         cohort: output/summary_adults.txt
-#         
-#   manipulate_dataset_adults:
-#     run: r:latest analysis/data_manipulation_adults.R
-#     needs: [generate_dataset_adults]
-#     outputs:
-#       highly_sensitive:
-#         cohort: output/input_manipulated_adults.arrow
-# 
-#   describe_adults:
-#     run: r:latest analysis/report_adults.R
-#     needs: [generate_dataset_adults, manipulate_dataset_adults]
-#     outputs:
-#       moderately_sensitive:
-#         cohort: output/descriptive_adults.png
-        
-# Children and adolescents 
+# Adults
 
-    generate_dataset_children_and_adolescents:
-      run: >
-        ehrql:v0 
-          generate-dataset analysis/dataset_definition_children_and_adolescents.py
-          --output output/input_children_and_adolescents.arrow
-          --dummy-data-file lib/dummydata/dummyinput_children_and_adolescents.arrow
-      outputs:
-        highly_sensitive:
-          cohort: output/input_children_and_adolescents.arrow
+  generate_dataset_adults:
+    run: >
+      ehrql:v0
+        generate-dataset analysis/dataset_definition_adults.py
+        --output output/input_adults.arrow
+        --dummy-data-file lib/dummydata/dummyinput_adults.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/input_adults.arrow
+
+  summarise_dataset_adults:
+    run: python:latest analysis/summarise_dataset_adults.py
+    needs: [generate_dataset_adults]
+    outputs:
+      moderately_sensitive:
+        cohort: output/summary_adults.txt
+
+  manipulate_dataset_adults:
+    run: r:latest analysis/data_manipulation_adults.R
+    needs: [generate_dataset_adults]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_manipulated_adults.arrow
+
+  # describe_adults:
+  #   run: r:latest analysis/report_adults.R
+  #   needs: [generate_dataset_adults, manipulate_dataset_adults]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/descriptive_adults.png
         
-    summarise_dataset_children_and_adolescents:
-      run: python:latest analysis/summarise_dataset_children_and_adolescents.py
-      needs: [generate_dataset_children_and_adolescents]
-      outputs:
-        moderately_sensitive:
-          cohort: output/summary_children_and_adolescents.txt
-        
-    manipulate_dataset_children_and_adolescents:
-      run: r:latest analysis/data_manipulation_children_and_adolescents.R
-      needs: [generate_dataset_children_and_adolescents]
-      outputs:
-        highly_sensitive:
-          cohort: output/input_manipulated_children_and_adolescents.arrow
+# Children and adolescents
+
+  generate_dataset_children_and_adolescents:
+    run: >
+      ehrql:v0
+        generate-dataset analysis/dataset_definition_children_and_adolescents.py
+        --output output/input_children_and_adolescents.arrow
+        --dummy-data-file lib/dummydata/dummyinput_children_and_adolescents.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/input_children_and_adolescents.arrow
+
+  summarise_dataset_children_and_adolescents:
+    run: python:latest analysis/summarise_dataset_children_and_adolescents.py
+    needs: [generate_dataset_children_and_adolescents]
+    outputs:
+      moderately_sensitive:
+        cohort: output/summary_children_and_adolescents.txt
+
+  manipulate_dataset_children_and_adolescents:
+    run: r:latest analysis/data_manipulation_children_and_adolescents.R
+    needs: [generate_dataset_children_and_adolescents]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_manipulated_children_and_adolescents.arrow
 
   # describe_children_and_adolescents:
   #   run: r:latest analysis/report_children_and_adolescents.R
@@ -76,37 +76,36 @@ actions:
   #   outputs:
   #     moderately_sensitive:
   #       cohort: output/descriptive_children_and_adolescents.png
-        
-# # Infants
-# 
-#   generate_dataset_infants:
-#     run: >
-#       ehrql:v0 
-#         generate-dataset analysis/dataset_definition_infants.py
-#         --output output/input_infants.arrow
-#         --dummy-data-file lib/dummydata/dummyinput_infants.arrow
-#     outputs:
-#       highly_sensitive:
-#         cohort: output/input_infants.arrow
-#         
-#   summarise_dataset_infants:
-#     run: python:latest analysis/summarise_dataset_infants.py
-#     needs: [generate_dataset_infants]
-#     outputs:
-#       moderately_sensitive:
-#         cohort: output/summary_infants.txt
-#         
-#   manipulate_dataset_infants:
-#     run: r:latest analysis/data_manipulation_infants.R
-#     needs: [generate_dataset_infants]
-#     outputs:
-#       highly_sensitive:
-#         cohort: output/input_manipulated_infants.arrow
-# 
-#   describe_infants:
-#     run: r:latest analysis/report_infants.R
-#     needs: [generate_dataset_infants, manipulate_dataset_infants]
-#     outputs:
-#       moderately_sensitive:
-#         cohort: output/descriptive_infants.png
-#         
+  
+# Infants
+
+  generate_dataset_infants:
+    run: >
+      ehrql:v0
+        generate-dataset analysis/dataset_definition_infants.py
+        --output output/input_infants.arrow
+        --dummy-data-file lib/dummydata/dummyinput_infants.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/input_infants.arrow
+
+  summarise_dataset_infants:
+    run: python:latest analysis/summarise_dataset_infants.py
+    needs: [generate_dataset_infants]
+    outputs:
+      moderately_sensitive:
+        cohort: output/summary_infants.txt
+
+  manipulate_dataset_infants:
+    run: r:latest analysis/data_manipulation_infants.R
+    needs: [generate_dataset_infants]
+    outputs:
+      highly_sensitive:
+        cohort: output/input_manipulated_infants.arrow
+
+  # describe_infants:
+  #   run: r:latest analysis/report_infants.R
+  #   needs: [generate_dataset_infants, manipulate_dataset_infants]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/descriptive_infants.png

@@ -84,6 +84,11 @@ sim_list = lst(
       "South West"
     ), p = c(0.2, 0.2, 0.3, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05)),
   ),
+  
+  #practice ID
+  practice_pseudo_id = bn_node(
+    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+  ),
 
   #day of death for patient (want most to be alive)
   death_day = bn_node(
