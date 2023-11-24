@@ -14,3 +14,6 @@ nhsd-primary-care-domain-refsets/dmnontype1_cod/20210127
 nhsd-primary-care-domain-refsets/hf_cod/20210127
 nhsd-primary-care-domain-refsets/mi_cod/20210127
 bristol/ild-snomed/2f3e3051
+opensafely/covid-identification-in-primary-care-probable-covid-positive-test/508192f8
+opensafely/documented-influenza-illness/2020-05-18
+opensafely/covid-identification/2020-06-03

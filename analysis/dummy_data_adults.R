@@ -87,7 +87,7 @@ sim_list = lst(
   
   #practice ID
   practice_pseudo_id = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 1))
   ),
 
   #day of death for patient (want most to be alive)
@@ -197,6 +197,38 @@ sim_list = lst(
   #covid vaccination
   covid_vaccination = bn_node(
     ~ rbernoulli(n = ..n, p = 0.65)
+  ),
+  
+  ##outcomes 
+  
+  #rsv primary care
+  rsv_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #rsv secondary care
+  rsv_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.05)
+  ),
+  
+  #covid primary care
+  covid_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.05)
+  ),
+  
+  #covid secondary care
+  covid_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
+  ),
+  
+  #flu primary care
+  flu_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01)
+  ),
+  
+  #flu secondary care
+  flu_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
   )
   
 )

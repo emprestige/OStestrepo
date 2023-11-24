@@ -8,7 +8,8 @@ from ehrql.tables.beta.tpp import (
   clinical_events,
   practice_registrations,
   household_memberships_2020,
-  vaccinations
+  vaccinations,
+  hospital_admissions
 )
 import codelists
 
@@ -169,3 +170,27 @@ dataset.covid_vaccination = (
   .where(vaccinations.date.is_on_or_before(index_date))
   .exists_for_patient()
 )
+
+##outcomes
+
+#rsv primary 
+
+#rsv secondary
+
+#covid primary 
+dataset.covid_primary = (
+  clinical_events.where(clinical_events.ctv3_code
+  .is_in(codelists.covid_primary_codelist))
+  .exists_for_patient()
+)
+
+#covid secondary
+dataset.covid_secondary = (
+  hospital_admissions.where(hospital_admissions.primary_diagnosis
+  .is_in(codelists.covid_secondary_codelist))
+  .exists_for_patient()
+)
+
+#flu primary 
+
+#flu secondary

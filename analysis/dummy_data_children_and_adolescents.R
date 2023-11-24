@@ -151,6 +151,38 @@ sim_list = lst(
   #covid vaccination
   covid_vaccination = bn_node(
     ~ rbernoulli(n = ..n, p = 0.65)
+  ),
+  
+  ##outcomes 
+  
+  #rsv primary care
+  rsv_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.08)
+  ),
+  
+  #rsv secondary care
+  rsv_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.1)
+  ),
+  
+  #covid primary care
+  covid_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.05)
+  ),
+  
+  #covid secondary care
+  covid_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.08)
+  ),
+  
+  #flu primary care
+  flu_primary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.05)
+  ),
+  
+  #flu secondary care
+  flu_secondary = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.08)
   )
   
 )

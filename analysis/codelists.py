@@ -101,3 +101,27 @@ prior_mi_codelist = codelist_from_csv(
   "codelists/nhsd-primary-care-domain-refsets-mi_cod.csv",
   column = "code",
 )
+
+#rsv primary - infants 
+
+#rsv primary - children and adolescents
+
+#rsv primary - adults 
+
+#rsv secondary
+
+#covid primary 
+covid_primary_codelist = codelist_from_csv(
+  "codelists/opensafely-covid-identification-in-primary-care-probable-covid-positive-test.csv",
+  column = "CTV3ID",
+)
+
+#covid secondary
+covid_secondary_codelist = codelist_from_csv(
+  "codelists/opensafely-covid-identification.csv",
+  column = "icd10_code",
+)
+
+#flu primary
+
+#flu secondary

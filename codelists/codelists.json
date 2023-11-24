@@ -95,6 +95,24 @@
       "url": "https://www.opencodelists.org/codelist/bristol/ild-snomed/2f3e3051/",
       "downloaded_at": "2023-11-15 15:37:54.282327Z",
       "sha": "9e2de5190c0081e01bffef1a56aa4431885da94e"
+    },
+    "opensafely-covid-identification-in-primary-care-probable-covid-positive-test.csv": {
+      "id": "opensafely/covid-identification-in-primary-care-probable-covid-positive-test/508192f8",
+      "url": "https://www.opencodelists.org/codelist/opensafely/covid-identification-in-primary-care-probable-covid-positive-test/508192f8/",
+      "downloaded_at": "2023-11-24 12:51:05.427759Z",
+      "sha": "510e103970c4131e6e276fd3b5094b68d2e7905c"
+    },
+    "opensafely-documented-influenza-illness.csv": {
+      "id": "opensafely/documented-influenza-illness/2020-05-18",
+      "url": "https://www.opencodelists.org/codelist/opensafely/documented-influenza-illness/2020-05-18/",
+      "downloaded_at": "2023-11-24 12:51:05.575462Z",
+      "sha": "c0acfad55b4d97fdf941cf0ce90d927401e571ff"
+    },
+    "opensafely-covid-identification.csv": {
+      "id": "opensafely/covid-identification/2020-06-03",
+      "url": "https://www.opencodelists.org/codelist/opensafely/covid-identification/2020-06-03/",
+      "downloaded_at": "2023-11-24 12:51:05.705484Z",
+      "sha": "124db6929439379b7dacd55ba26ae4f2ed9370bc"
     }
   }
 }
