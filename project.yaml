@@ -109,3 +109,36 @@ actions:
   #   outputs:
   #     moderately_sensitive:
   #       cohort: output/descriptive_infants.png
+
+# # Infants Subgroup
+# 
+#   generate_dataset_infants_subgroup:
+#     run: >
+#       ehrql:v0
+#         generate-dataset analysis/dataset_definition_infants_subgroup.py
+#         --output output/input_infants_subgroup.arrow
+#         --dummy-data-file lib/dummydata/dummyinput_infants_subgroup.arrow
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/input_infants_subgroup.arrow
+# 
+#   summarise_dataset_infants_subgroup:
+#     run: python:latest analysis/summarise_dataset_infants_subgroup.py
+#     needs: [generate_dataset_infants_subgroup]
+#     outputs:
+#       moderately_sensitive:
+#         cohort: output/summary_infants_subgroup.txt
+# 
+#   manipulate_dataset_infants_subgroup:
+#     run: r:latest analysis/data_manipulation_infants_subgroup.R
+#     needs: [generate_dataset_infants_subgroup]
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/input_manipulated_infants_subgroup.arrow
+# 
+#   # describe_infants_subgroup:
+#   #   run: r:latest analysis/report_infants.R
+#   #   needs: [generate_dataset_infants_subgroup, manipulate_dataset_infants_subgroup]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/descriptive_infants_subgroup.png

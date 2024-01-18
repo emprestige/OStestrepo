@@ -129,6 +129,53 @@ sim_list = lst(
     ~ calculate_household_sizes(household_pseudo_id)
   ),
   
+  #family ID for baby
+  baby_id = bn_node(
+    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+  ),
+  
+  ##maternal characteristics
+  
+  #matching family ID for mother
+  mother_id = bn_node(
+    ~ baby_id,
+  ),
+    
+  #age 
+  maternal_age = bn_node(
+    ~ rnorm(n = ..n, mean = 30, sd = 5)
+  ),
+  
+  #smoking status
+  maternal_smoking_code = bn_node(
+    ~ rfactor(n = ..n, levels = c(
+      "S", #smoker
+      "E", #ever-smoked
+      "N", #never smoked
+      "M" #missing
+    ), p = c(0.1, 0.2, 0.7, 0))
+  ),
+  
+  #drinking 
+  maternal_drinking = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.05),
+  ),
+  
+  #drug usage
+  maternal_drug_usage = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01),
+  ),
+  
+  #flu vaccination
+  maternal_flu_vaccination = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.4) #vary over ethnicity
+  ),
+  
+  #pertussis vaccination
+  maternal_pertussis_vaccination = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.5) #vary over ethnicity
+  ),
+  
   ##outcomes 
   
   #rsv primary care
@@ -177,4 +224,4 @@ dummydata_processed <- dummydata %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
 fs::dir_create(here("lib", "dummydata"))
-write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_infants.arrow"))
+write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_infants_subgroup.arrow"))

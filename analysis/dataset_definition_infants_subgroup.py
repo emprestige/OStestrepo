@@ -1,6 +1,6 @@
 from datetime import date
 from ehrql import Dataset, case, when
-from ehrql.tables.tpp import ( 
+from ehrql.tables.beta.tpp import ( 
   patients, 
   medications,
   ons_deaths,
@@ -8,8 +8,7 @@ from ehrql.tables.tpp import (
   clinical_events,
   practice_registrations,
   household_memberships_2020,
-  vaccinations,
-  apcs
+  vaccinations
 )
 import codelists
 
@@ -68,30 +67,55 @@ dataset.practice_pseudo_id = practice_registrations.for_patient_on(index_date).p
 dataset.region = (practice_registrations.for_patient_on(index_date)).practice_nuts1_region_name
 dataset.stp = (practice_registrations.for_patient_on(index_date)).practice_stp
 
-##outcomes
+#family ID for baby and mother (using household ID for now because family ID not available yet)
+dataset.baby_id = household_memberships_2020.household_pseudo_id
+matching_id =
+dataset.mother_id =
 
-#rsv primary 
+(household_memberships_2020.household_pseudo_id
+  household_memberships_2020.household_pseudo_id == dataset.baby_id &
+  practice_registrations.for_patient_on(index_date).practice_pseudo_id == dataset.practice_pseudo_id
+)
 
-#rsv secondary
+##maternal characteristics
 
-#covid primary 
-dataset.covid_primary = (
-  clinical_events.where(clinical_events.ctv3_code
-  .is_in(codelists.covid_primary_codelist))
+#smoking
+dataset.maternal_smoking_code = (
+  clinical_events.where(clinical_events.ctv3_code.is_in(codelists.clear_smoking_codes))
+  .where(clinical_events.date.is_on_or_before(index_date))
+  .sort_by(clinical_events.date)
+  .last_for_patient()
+  .ctv3_code
+)
+
+#drinking and drug usage
+dataset.maternal_drinking = (
+  clinical_events.where(clinical_events.snomedct_code
+  .is_in(codelists.drinking_codelist))
+  .exists_for_patient()
+)
+dataset.maternal_drug_usage = (
+  clinical_events.where(clinical_events.snomedct_code.is_in(codelists.drug_usage_codelist))
+  .exists_for_patient() | clinical_events.where(clinical_events.snomedct_code
+  .is_in(codelists.drug_intervention_codelist))
+  .exists_for_patient() | clinical_events.where(clinical_events.snomedct_code
+  .is_in(codelists.drug_assessment_declination_codelist))
   .exists_for_patient()
 )
 
-#covid secondary
-dataset.covid_secondary = (
-  apcs.where(apcs.primary_diagnosis
-  .is_in(codelists.covid_secondary_codelist))
-  .exists_for_patient()
-  |apcs.where(apcs.secondary_diagnosis
-  .is_in(codelists.covid_secondary_codelist))
+#define earliest vaccination date
+vaccination_date = "2022-10-01"
+
+#vaccinations
+dataset.maternal_flu_vaccination = (
+  vaccinations.where(vaccinations.target_disease.is_in(["Influenza"]))
+  .sort_by(vaccinations.date)
+  .where(vaccinations.date.is_on_or_between(vaccination_date, index_date))
   .exists_for_patient()
 )
-
-#flu primary 
-
-#flu secondary
-
+dataset.maternal_pertussis_vaccination = (
+  vaccinations.where(vaccinations.target_disease.is_in(["SARS-COV-2"]))
+  .sort_by(vaccinations.date)
+  .where(vaccinations.date.is_on_or_before(index_date))
+  .exists_for_patient()
+)

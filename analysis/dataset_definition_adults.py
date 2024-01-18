@@ -15,6 +15,8 @@ import codelists
 
 dataset = Dataset()
 
+#define season
+start_date = "2016"
 index_date = "2023-10-31"
 
 age_at_start = patients.age_on("2016-03-01")
