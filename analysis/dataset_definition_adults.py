@@ -1,6 +1,6 @@
 from datetime import date
 from ehrql import Dataset, case, when
-from ehrql.tables.beta.tpp import ( 
+from ehrql.tables.tpp import ( 
   patients, 
   medications,
   ons_deaths,
@@ -9,7 +9,7 @@ from ehrql.tables.beta.tpp import (
   practice_registrations,
   household_memberships_2020,
   vaccinations,
-  hospital_admissions
+  apcs
 )
 import codelists
 
@@ -188,7 +188,10 @@ dataset.covid_primary = (
 
 #covid secondary
 dataset.covid_secondary = (
-  hospital_admissions.where(hospital_admissions.primary_diagnosis
+  apcs.where(apcs.primary_diagnosis
+  .is_in(codelists.covid_secondary_codelist))
+  .exists_for_patient()
+  |apcs.where(apcs.secondary_diagnosis
   .is_in(codelists.covid_secondary_codelist))
   .exists_for_patient()
 )

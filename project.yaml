@@ -15,7 +15,7 @@ actions:
 
   generate_dataset_adults:
     run: >
-      ehrql:v0
+      ehrql:v1
         generate-dataset analysis/dataset_definition_adults.py
         --output output/input_adults.arrow
         --dummy-data-file lib/dummydata/dummyinput_adults.arrow
@@ -48,7 +48,7 @@ actions:
 
   generate_dataset_children_and_adolescents:
     run: >
-      ehrql:v0
+      ehrql:v1
         generate-dataset analysis/dataset_definition_children_and_adolescents.py
         --output output/input_children_and_adolescents.arrow
         --dummy-data-file lib/dummydata/dummyinput_children_and_adolescents.arrow
@@ -81,7 +81,7 @@ actions:
 
   generate_dataset_infants:
     run: >
-      ehrql:v0
+      ehrql:v1
         generate-dataset analysis/dataset_definition_infants.py
         --output output/input_infants.arrow
         --dummy-data-file lib/dummydata/dummyinput_infants.arrow
@@ -114,7 +114,7 @@ actions:
 # 
 #   generate_dataset_infants_subgroup:
 #     run: >
-#       ehrql:v0
+#       ehrql:v1
 #         generate-dataset analysis/dataset_definition_infants_subgroup.py
 #         --output output/input_infants_subgroup.arrow
 #         --dummy-data-file lib/dummydata/dummyinput_infants_subgroup.arrow
