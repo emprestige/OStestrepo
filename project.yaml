@@ -103,12 +103,12 @@ actions:
       highly_sensitive:
         cohort: output/input_manipulated_infants.arrow
 
-  # describe_infants:
-  #   run: r:latest analysis/report_infants.R
-  #   needs: [generate_dataset_infants, manipulate_dataset_infants]
-  #   outputs:
-  #     moderately_sensitive:
-  #       cohort: output/descriptive_infants.png
+  describe_infants:
+    run: r:latest analysis/report_infants.R
+    needs: [generate_dataset_infants, manipulate_dataset_infants]
+    outputs:
+      moderately_sensitive:
+        cohort: output/descriptive_infants.png
 
 # # Infants Subgroup
 # 
