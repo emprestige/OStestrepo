@@ -123,9 +123,22 @@ dataset.maternal_pertussis_vaccination = (
 
 ##outcomes
 
-#rsv primary 
+#rsv primary
+dataset.rsv_primary = (
+  clinical_events.where(clinical_events.ctv3_code
+  .is_in(codelists.covid_primary_codelist)) #change codelist when available
+  .exists_for_patient()
+)
 
 #rsv secondary
+dataset.rsv_secondary = (
+  apcs.where(apcs.primary_diagnosis
+  .is_in(codelists.covid_secondary_codelist)) #change codelist when available
+  .exists_for_patient()
+  |apcs.where(apcs.secondary_diagnosis
+  .is_in(codelists.covid_secondary_codelist)) #change codelist when available
+  .exists_for_patient()
+)
 
 #covid primary 
 dataset.covid_primary = (
@@ -145,5 +158,18 @@ dataset.covid_secondary = (
 )
 
 #flu primary 
+dataset.flu_primary = (
+  clinical_events.where(clinical_events.ctv3_code
+  .is_in(codelists.covid_primary_codelist)) #change codelist when available
+  .exists_for_patient()
+)
 
 #flu secondary
+dataset.flu_secondary = (
+  apcs.where(apcs.primary_diagnosis
+  .is_in(codelists.covid_secondary_codelist)) #change codelist when available
+  .exists_for_patient()
+  |apcs.where(apcs.secondary_diagnosis
+  .is_in(codelists.covid_secondary_codelist)) #change codelist when available
+  .exists_for_patient()
+)
