@@ -12,22 +12,17 @@ library("dd4d")
 #define population size for dummy data
 population_size <- 1000
 
-# #get nth largest value from list
-# nthmax <- function(x, n=1){
-#   dplyr::nth(sort(x, decreasing=TRUE), n)
-# }
-#
-# nthmin <- function(x, n=1){
-#   dplyr::nth(sort(x, decreasing=FALSE), n)
-# }
-
 #define index date and study start date
-index_date <- as.Date("2022-01-01")
-# studystart_date <- as.Date("2016-01-03")
+source(here("analysis", "design", "design.R"))
+studystart_date <- as.Date(study_dates$studystart_date)
+studyend_date <- as.Date(study_dates$studyend_date)
+#followupend_date <- as.Date(study_dates$followupend_date)
+index_date <- studystart_date
 
 #define index day and study start day
 index_day <- 0L
-# studystart_day <- as.integer(studystart_date - index_date)
+studystart_day <- as.integer(studystart_date - index_date)
+studyend_day <- as.integer(studyend_date - index_date)
 
 #define known variables
 known_variables <- c(
@@ -248,3 +243,6 @@ dummydata_processed <- dummydata %>%
 
 fs::dir_create(here("lib", "dummydata"))
 write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_adults.arrow"))
+
+fs::dir_create(here("analysis", "dummydata"))
+write_feather(dummydata_processed, sink = here("analysis", "dummydata", "dummyextract_adults.arrow"))

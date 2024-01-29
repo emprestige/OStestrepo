@@ -5,12 +5,6 @@ expectations:
 
 actions:
 
-  # generate_dummy_data:
-  #   run: r:latest analysis/dummy_data_adults.R
-  #   outputs:
-  #     highly_sensitive:
-  #       cohort: lib/dummydata/dummyinput.arrow
-
 # Adults
 
   generate_dataset_adults:
@@ -18,7 +12,7 @@ actions:
       ehrql:v1
         generate-dataset analysis/dataset_definition_adults.py
         --output output/input_adults.arrow
-        --dummy-data-file lib/dummydata/dummyinput_adults.arrow
+        --dummy-data-file analysis/dummydata/dummyextract_adults.arrow
     outputs:
       highly_sensitive:
         cohort: output/input_adults.arrow
@@ -31,7 +25,7 @@ actions:
         cohort: output/summary_adults.txt
 
   manipulate_dataset_adults:
-    run: r:latest analysis/data_manipulation_adults.R
+    run: r:latest analysis/processing/data_manipulation_adults.R
     needs: [generate_dataset_adults]
     outputs:
       highly_sensitive:
@@ -51,7 +45,7 @@ actions:
       ehrql:v1
         generate-dataset analysis/dataset_definition_children_and_adolescents.py
         --output output/input_children_and_adolescents.arrow
-        --dummy-data-file lib/dummydata/dummyinput_children_and_adolescents.arrow
+        --dummy-data-file analysis/dummydata/dummyextract_children_and_adolescents.arrow
     outputs:
       highly_sensitive:
         cohort: output/input_children_and_adolescents.arrow
@@ -64,7 +58,7 @@ actions:
         cohort: output/summary_children_and_adolescents.txt
 
   manipulate_dataset_children_and_adolescents:
-    run: r:latest analysis/data_manipulation_children_and_adolescents.R
+    run: r:latest analysis/processing/data_manipulation_children_and_adolescents.R
     needs: [generate_dataset_children_and_adolescents]
     outputs:
       highly_sensitive:
@@ -72,11 +66,12 @@ actions:
 
   # describe_children_and_adolescents:
   #   run: r:latest analysis/report_children_and_adolescents.R
-  #   needs: [generate_dataset_children_and_adolescents, manipulate_dataset_children_and_adolescents]
+  #   needs: [generate_dataset_children_and_adolescents, 
+  #           manipulate_dataset__children_and_adolescents]
   #   outputs:
   #     moderately_sensitive:
-  #       cohort: output/descriptive_children_and_adolescents.png
-  
+  #       cohort: output/descriptive__children_and_adolescents.png
+
 # Infants
 
   generate_dataset_infants:
@@ -84,7 +79,7 @@ actions:
       ehrql:v1
         generate-dataset analysis/dataset_definition_infants.py
         --output output/input_infants.arrow
-        --dummy-data-file lib/dummydata/dummyinput_infants.arrow
+        --dummy-data-file analysis/dummydata/dummyextract_infants.arrow
     outputs:
       highly_sensitive:
         cohort: output/input_infants.arrow
@@ -97,7 +92,7 @@ actions:
         cohort: output/summary_infants.txt
 
   manipulate_dataset_infants:
-    run: r:latest analysis/data_manipulation_infants.R
+    run: r:latest analysis/processing/data_manipulation_infants.R
     needs: [generate_dataset_infants]
     outputs:
       highly_sensitive:
@@ -117,7 +112,7 @@ actions:
 #       ehrql:v1
 #         generate-dataset analysis/dataset_definition_infants_subgroup.py
 #         --output output/input_infants_subgroup.arrow
-#         --dummy-data-file lib/dummydata/dummyinput_infants_subgroup.arrow
+#         --dummy-data-file analysis/dummydata/dummyextract_infants_subgroup.arrow
 #     outputs:
 #       highly_sensitive:
 #         cohort: output/input_infants_subgroup.arrow
@@ -130,7 +125,7 @@ actions:
 #         cohort: output/summary_infants_subgroup.txt
 # 
 #   manipulate_dataset_infants_subgroup:
-#     run: r:latest analysis/data_manipulation_infants_subgroup.R
+#     run: r:latest analysis/processing/data_manipulation_infants_subgroup.R
 #     needs: [generate_dataset_infants_subgroup]
 #     outputs:
 #       highly_sensitive:

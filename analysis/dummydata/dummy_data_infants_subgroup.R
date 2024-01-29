@@ -12,22 +12,17 @@ library("dd4d")
 #define population size for dummy data
 population_size <- 1000
 
-# #get nth largest value from list
-# nthmax <- function(x, n=1){
-#   dplyr::nth(sort(x, decreasing=TRUE), n)
-# }
-#
-# nthmin <- function(x, n=1){
-#   dplyr::nth(sort(x, decreasing=FALSE), n)
-# }
-
 #define index date and study start date
-index_date <- as.Date("2022-01-01")
-# studystart_date <- as.Date("2016-01-03")
+source(here("analysis", "design", "design.R"))
+studystart_date <- as.Date(study_dates$studystart_date)
+studyend_date <- as.Date(study_dates$studyend_date)
+#followupend_date <- as.Date(study_dates$followupend_date)
+index_date <- studystart_date
 
 #define index day and study start day
 index_day <- 0L
-# studystart_day <- as.integer(studystart_date - index_date)
+studystart_day <- as.integer(studystart_date - index_date)
+studyend_day <- as.integer(studyend_date - index_date)
 
 #define known variables
 known_variables <- c(
@@ -129,6 +124,53 @@ sim_list = lst(
     ~ calculate_household_sizes(household_pseudo_id)
   ),
   
+  #family ID for baby
+  baby_id = bn_node(
+    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+  ),
+  
+  ##maternal characteristics
+  
+  #matching family ID for mother
+  mother_id = bn_node(
+    ~ baby_id,
+  ),
+    
+  #age 
+  maternal_age = bn_node(
+    ~ rnorm(n = ..n, mean = 30, sd = 5)
+  ),
+  
+  #smoking status
+  maternal_smoking_code = bn_node(
+    ~ rfactor(n = ..n, levels = c(
+      "S", #smoker
+      "E", #ever-smoked
+      "N", #never smoked
+      "M" #missing
+    ), p = c(0.1, 0.2, 0.7, 0))
+  ),
+  
+  #drinking 
+  maternal_drinking = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.05),
+  ),
+  
+  #drug usage
+  maternal_drug_usage = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.01),
+  ),
+  
+  #flu vaccination
+  maternal_flu_vaccination = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.4) #vary over ethnicity
+  ),
+  
+  #pertussis vaccination
+  maternal_pertussis_vaccination = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.5) #vary over ethnicity
+  ),
+  
   ##outcomes 
   
   #rsv primary care
@@ -177,4 +219,7 @@ dummydata_processed <- dummydata %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
 fs::dir_create(here("lib", "dummydata"))
-write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_infants.arrow"))
+write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_infants_subgroup.arrow"))
+
+fs::dir_create(here("analysis", "dummydata"))
+write_feather(dummydata_processed, sink = here("analysis", "dummydata", "dummyextract_infants_subgroup.arrow"))

@@ -12,27 +12,23 @@ library("dd4d")
 #define population size for dummy data
 population_size <- 1000
 
-# #get nth largest value from list
-# nthmax <- function(x, n=1){
-#   dplyr::nth(sort(x, decreasing=TRUE), n)
-# }
-#
-# nthmin <- function(x, n=1){
-#   dplyr::nth(sort(x, decreasing=FALSE), n)
-# }
-
 #define index date and study start date
-index_date <- as.Date("2022-01-01")
-# studystart_date <- as.Date("2016-01-03")
+source(here("analysis", "design", "design.R"))
+studystart_date <- as.Date(study_dates$studystart_date)
+studyend_date <- as.Date(study_dates$studyend_date)
+#followupend_date <- as.Date(study_dates$followupend_date)
+index_date <- studystart_date
 
 #define index day and study start day
 index_day <- 0L
-# studystart_day <- as.integer(studystart_date - index_date)
+studystart_day <- as.integer(studystart_date - index_date)
+studyend_day <- as.integer(studyend_date - index_date)
 
 #define known variables
 known_variables <- c(
-  "index_date",
-  "index_day"
+  "index_date", "studystart_date", "studyend_date", 
+  "index_day",  "studystart_day", "studyend_day", 
+  NULL
 )
 
 # Define a helper function to calculate household size based on household_pseudo_id
@@ -51,13 +47,12 @@ sim_list = lst(
   #sex of the patient
   sex = bn_node(
     ~ rfactor(n = ..n, levels = c("female", "male", "intersex", "unknown"),
-              p = c(0.51, 0.49, 0, 0)), missing_rate = ~ 0.001
+              p = c(0.51, 0.49, 0, 0)), missing_rate = ~0.001
   ),
 
   #age of the patient
   age = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 60, sd = 14, min = 5, max = 17)), 
-    missing_rate = ~ 0.001
+    ~ as.integer(rnormTrunc(n = ..n, mean = 12, sd = 4, min = 0, max = 23)),
   ),
 
   #sustainability transformation partnership code (here a pseudocode just represented by a number)
@@ -79,7 +74,7 @@ sim_list = lst(
       "South West"
     ), p = c(0.2, 0.2, 0.3, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05)),
   ),
-  
+
   #practice ID
   practice_pseudo_id = bn_node(
     ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
@@ -88,20 +83,24 @@ sim_list = lst(
   #day of death for patient (want most to be alive)
   death_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 2000)),
-    missing_rate = ~ 0.99
+    missing_rate = ~ 0.999
   ),
 
   #rurality classification
   rural_urban_classification = bn_node(
     ~ as.integer(runif(n = ..n, min = 1, max = 8))
   ),
+  
+  #gestational age
+  gestational_age = bn_node(
+    ~ rnorm(n = ..n, mean = 38, sd = 2)
+  ),
 
   ##exposures
 
   #index of multiple deprivation
   imd_rounded = bn_node(
-    ~ as.integer(round(runif(n = ..n, min = 0, max = 32844), digits = -2)),
-    missing_rate = ~ 0.05
+    ~ as.integer(round(runif(n = ..n, min = 0, max = 32844), digits = -2))
   ),
 
   #ethnicity (group 6)
@@ -126,38 +125,11 @@ sim_list = lst(
     ~ calculate_household_sizes(household_pseudo_id)
   ),
   
-  ##comorbidities
-  
-  #has asthma 
-  has_asthma = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.15)
-  ),
-  
-  #has reactive airway disease
-  has_reactive_airway = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.05)
-  ),
-  
-  # #diabetes
-  # has_diabetes = bn_node(
-  #   ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))
-  # ),
-  
-  #flu vaccination
-  flu_vaccination = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.75)
-  ),
-  
-  #covid vaccination
-  covid_vaccination = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.65)
-  ),
-  
   ##outcomes 
   
   #rsv primary care
   rsv_primary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.08)
+    ~ rbernoulli(n = ..n, p = 0.05)
   ),
   
   #rsv secondary care
@@ -167,7 +139,7 @@ sim_list = lst(
   
   #covid primary care
   covid_primary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.05)
+    ~ rbernoulli(n = ..n, p = 0.02)
   ),
   
   #covid secondary care
@@ -177,12 +149,12 @@ sim_list = lst(
   
   #flu primary care
   flu_primary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.05)
+    ~ rbernoulli(n = ..n, p = 0.02)
   ),
   
   #flu secondary care
   flu_secondary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.08)
+    ~ rbernoulli(n = ..n, p = 0.075)
   )
   
 )
@@ -195,10 +167,15 @@ bn_plot(bn, connected_only = TRUE)
 set.seed(10)
 
 dummydata <- bn_simulate(bn, pop_size = population_size, keep_all = FALSE, .id = "patient_id")
+dummydata$patientstart_day <- studystart_day
+dummydata$patientend_day <- studyend_day
 
 dummydata_processed <- dummydata %>%
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
 fs::dir_create(here("lib", "dummydata"))
-write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_children_and_adolescents.arrow"))
+write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_infants.arrow"))
+
+fs::dir_create(here("analysis", "dummydata"))
+write_feather(dummydata_processed, sink = here("analysis", "dummydata", "dummyextract_infants.arrow"))

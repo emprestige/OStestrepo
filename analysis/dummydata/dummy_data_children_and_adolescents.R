@@ -12,22 +12,17 @@ library("dd4d")
 #define population size for dummy data
 population_size <- 1000
 
-# #get nth largest value from list
-# nthmax <- function(x, n=1){
-#   dplyr::nth(sort(x, decreasing=TRUE), n)
-# }
-#
-# nthmin <- function(x, n=1){
-#   dplyr::nth(sort(x, decreasing=FALSE), n)
-# }
-
 #define index date and study start date
-index_date <- as.Date("2022-01-01")
-# studystart_date <- as.Date("2016-01-03")
+source(here("analysis", "design", "design.R"))
+studystart_date <- as.Date(study_dates$studystart_date)
+studyend_date <- as.Date(study_dates$studyend_date)
+#followupend_date <- as.Date(study_dates$followupend_date)
+index_date <- studystart_date
 
 #define index day and study start day
 index_day <- 0L
-# studystart_day <- as.integer(studystart_date - index_date)
+studystart_day <- as.integer(studystart_date - index_date)
+studyend_day <- as.integer(studyend_date - index_date)
 
 #define known variables
 known_variables <- c(
@@ -51,12 +46,13 @@ sim_list = lst(
   #sex of the patient
   sex = bn_node(
     ~ rfactor(n = ..n, levels = c("female", "male", "intersex", "unknown"),
-              p = c(0.51, 0.49, 0, 0)), missing_rate = ~0.001
+              p = c(0.51, 0.49, 0, 0)), missing_rate = ~ 0.001
   ),
 
   #age of the patient
   age = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 12, sd = 4, min = 0, max = 23)),
+    ~ as.integer(rnormTrunc(n = ..n, mean = 60, sd = 14, min = 5, max = 17)), 
+    missing_rate = ~ 0.001
   ),
 
   #sustainability transformation partnership code (here a pseudocode just represented by a number)
@@ -78,7 +74,7 @@ sim_list = lst(
       "South West"
     ), p = c(0.2, 0.2, 0.3, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05)),
   ),
-
+  
   #practice ID
   practice_pseudo_id = bn_node(
     ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
@@ -87,24 +83,20 @@ sim_list = lst(
   #day of death for patient (want most to be alive)
   death_day = bn_node(
     ~ as.integer(runif(n = ..n, index_day, index_day + 2000)),
-    missing_rate = ~ 0.999
+    missing_rate = ~ 0.99
   ),
 
   #rurality classification
   rural_urban_classification = bn_node(
     ~ as.integer(runif(n = ..n, min = 1, max = 8))
   ),
-  
-  #gestational age
-  gestational_age = bn_node(
-    ~ rnorm(n = ..n, mean = 38, sd = 2)
-  ),
 
   ##exposures
 
   #index of multiple deprivation
   imd_rounded = bn_node(
-    ~ as.integer(round(runif(n = ..n, min = 0, max = 32844), digits = -2))
+    ~ as.integer(round(runif(n = ..n, min = 0, max = 32844), digits = -2)),
+    missing_rate = ~ 0.05
   ),
 
   #ethnicity (group 6)
@@ -129,58 +121,38 @@ sim_list = lst(
     ~ calculate_household_sizes(household_pseudo_id)
   ),
   
-  #family ID for baby
-  baby_id = bn_node(
-    ~ as.integer(rnormTrunc(n = ..n, mean = 500, sd = 500, min = 0))
+  ##comorbidities
+  
+  #has asthma 
+  has_asthma = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.15)
   ),
   
-  ##maternal characteristics
-  
-  #matching family ID for mother
-  mother_id = bn_node(
-    ~ baby_id,
-  ),
-    
-  #age 
-  maternal_age = bn_node(
-    ~ rnorm(n = ..n, mean = 30, sd = 5)
+  #has reactive airway disease
+  has_reactive_airway = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.05)
   ),
   
-  #smoking status
-  maternal_smoking_code = bn_node(
-    ~ rfactor(n = ..n, levels = c(
-      "S", #smoker
-      "E", #ever-smoked
-      "N", #never smoked
-      "M" #missing
-    ), p = c(0.1, 0.2, 0.7, 0))
-  ),
-  
-  #drinking 
-  maternal_drinking = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.05),
-  ),
-  
-  #drug usage
-  maternal_drug_usage = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.01),
-  ),
+  # #diabetes
+  # has_diabetes = bn_node(
+  #   ~ rbernoulli(n = ..n, p = plogis(-1 + age*0.02 + I(sex == "female")*-0.2))
+  # ),
   
   #flu vaccination
-  maternal_flu_vaccination = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.4) #vary over ethnicity
+  flu_vaccination = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.75)
   ),
   
-  #pertussis vaccination
-  maternal_pertussis_vaccination = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.5) #vary over ethnicity
+  #covid vaccination
+  covid_vaccination = bn_node(
+    ~ rbernoulli(n = ..n, p = 0.65)
   ),
   
   ##outcomes 
   
   #rsv primary care
   rsv_primary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.05)
+    ~ rbernoulli(n = ..n, p = 0.08)
   ),
   
   #rsv secondary care
@@ -190,7 +162,7 @@ sim_list = lst(
   
   #covid primary care
   covid_primary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.02)
+    ~ rbernoulli(n = ..n, p = 0.05)
   ),
   
   #covid secondary care
@@ -200,12 +172,12 @@ sim_list = lst(
   
   #flu primary care
   flu_primary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.02)
+    ~ rbernoulli(n = ..n, p = 0.05)
   ),
   
   #flu secondary care
   flu_secondary = bn_node(
-    ~ rbernoulli(n = ..n, p = 0.075)
+    ~ rbernoulli(n = ..n, p = 0.08)
   )
   
 )
@@ -224,4 +196,7 @@ dummydata_processed <- dummydata %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
 
 fs::dir_create(here("lib", "dummydata"))
-write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_infants_subgroup.arrow"))
+write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_children_and_adolescents.arrow"))
+
+fs::dir_create(here("analysis", "dummydata"))
+write_feather(dummydata_processed, sink = here("analysis", "dummydata", "dummyextract_children_and_adolescents.arrow"))
