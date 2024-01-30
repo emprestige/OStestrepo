@@ -14,15 +14,14 @@ population_size <- 1000
 
 #define index date and study start date
 source(here("analysis", "design", "design.R"))
-studystart_date <- as.Date(study_dates$studystart_date)
-studyend_date <- as.Date(study_dates$studyend_date)
-#followupend_date <- as.Date(study_dates$followupend_date)
-index_date <- studystart_date
+study_start_date <- as.Date(study_dates$study_start_date)
+study_end_date <- as.Date(study_dates$study_end_date)
+index_date <- study_start_date
 
 #define index day and study start day
 index_day <- 0L
-studystart_day <- as.integer(studystart_date - index_date)
-studyend_day <- as.integer(studyend_date - index_date)
+study_start_day <- as.integer(study_start_date - index_date)
+study_end_day <- as.integer(study_end_date - index_date)
 
 #define known variables
 known_variables <- c(
@@ -191,12 +190,12 @@ set.seed(10)
 
 dummydata <- bn_simulate(bn, pop_size = population_size, keep_all = FALSE, .id = "patient_id")
 
+dummydata$patient_start_day <- study_start_day
+dummydata$patient_end_day <- study_end_day
+
 dummydata_processed <- dummydata %>%
   mutate(across(ends_with("_day"), ~ as.Date(as.character(index_date + .)))) %>%
   rename_with(~str_replace(., "_day", "_date"), ends_with("_day"))
-
-fs::dir_create(here("lib", "dummydata"))
-write_feather(dummydata_processed, sink = here("lib", "dummydata", "dummyinput_children_and_adolescents.arrow"))
 
 fs::dir_create(here("analysis", "dummydata"))
 write_feather(dummydata_processed, sink = here("analysis", "dummydata", "dummyextract_children_and_adolescents.arrow"))

@@ -17,12 +17,12 @@ actions:
       highly_sensitive:
         cohort: output/input_adults.arrow
 
-  summarise_dataset_adults:
-    run: python:latest analysis/summarise_dataset_adults.py
-    needs: [generate_dataset_adults]
-    outputs:
-      moderately_sensitive:
-        cohort: output/summary_adults.txt
+  # summarise_dataset_adults:
+  #   run: python:latest analysis/summarise_dataset_adults.py
+  #   needs: [generate_dataset_adults]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/summary_adults.txt
 
   manipulate_dataset_adults:
     run: r:latest analysis/processing/data_manipulation_adults.R
@@ -37,6 +37,223 @@ actions:
   #   outputs:
   #     moderately_sensitive:
   #       cohort: output/descriptive_adults.png
+
+  generate_dataset_adults_s1:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2016-17/dataset_definition_adults_s1.py
+        --output output/seasons/2016-17/input_adults_s1.arrow
+        --dummy-data-file analysis/seasons/2016-17/dummydata/dummyextract_adults_s1.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2016-17/input_adults_s1.arrow
+
+  # summarise_dataset_adults_s1:
+  #   run: python:latest analysis/seasons/2016-17/summarise_dataset_adults_s1.py
+  #   needs: [generate_dataset_adults_s1]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2016-17/summary_adults_s1.txt
+
+  manipulate_dataset_adults_s1:
+    run: r:latest analysis/seasons/2016-17/processing/data_manipulation_adults_s1.R
+    needs: [generate_dataset_adults_s1]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2016-17/input_manipulated_adults_s1.arrow
+
+  # describe_adults_s1:
+  #   run: r:latest analysis/seasons/2016-17/report_adults_s1.R
+  #   needs: [generate_dataset_adults_s1, manipulate_dataset_adults_s1]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2016-17/descriptive_adults_s1.png
+
+  generate_dataset_adults_s2:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2017-18/dataset_definition_adults_s2.py
+        --output output/seasons/2017-18/input_adults_s2.arrow
+        --dummy-data-file analysis/seasons/2017-18/dummydata/dummyextract_adults_s2.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2017-18/input_adults_s2.arrow
+
+  # summarise_dataset_adults_s2:
+  #   run: python:latest analysis/seasons/2017-18/summarise_dataset_adults_s2.py
+  #   needs: [generate_dataset_adults_s2]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2017-18/summary_adults_s2.txt
+
+  manipulate_dataset_adults_s2:
+    run: r:latest analysis/seasons/2017-18/processing/data_manipulation_adults_s2.R
+    needs: [generate_dataset_adults_s2]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2017-18/input_manipulated_adults_s2.arrow
+
+  # describe_adults_s2:
+  #   run: r:latest analysis/seasons/2017-18/report_adults_s2.R
+  #   needs: [generate_dataset_adults_s2, manipulate_dataset_adults_s2]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2017-18/descriptive_adults_s2.png
+  
+  generate_dataset_adults_s3:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2018-19/dataset_definition_adults_s3.py
+        --output output/seasons/2018-19/input_adults_s3.arrow
+        --dummy-data-file analysis/seasons/2018-19/dummydata/dummyextract_adults_s3.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2018-19/input_adults_s3.arrow
+
+  # summarise_dataset_adults_s3:
+  #   run: python:latest analysis/seasons/2018-19/summarise_dataset_adults_s3.py
+  #   needs: [generate_dataset_adults_s3]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2018-19/summary_adults_s3.txt
+
+  manipulate_dataset_adults_s3:
+    run: r:latest analysis/seasons/2018-19/processing/data_manipulation_adults_s3.R
+    needs: [generate_dataset_adults_s3]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2018-19/input_manipulated_adults_s3.arrow
+
+  # describe_adults_s3:
+  #   run: r:latest analysis/seasons/2018-19/report_adults_s3.R
+  #   needs: [generate_dataset_adults_s3, manipulate_dataset_adults_s3]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2018-19/descriptive_adults_s3.png
+  
+  generate_dataset_adults_s4:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2019-20/dataset_definition_adults_s4.py
+        --output output/seasons/2019-20/input_adults_s4.arrow
+        --dummy-data-file analysis/seasons/2019-20/dummydata/dummyextract_adults_s4.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2019-20/input_adults_s4.arrow
+
+  # summarise_dataset_adults_s4:
+  #   run: python:latest analysis/seasons/2019-20/summarise_dataset_adults_s4.py
+  #   needs: [generate_dataset_adults_s4]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2019-20/summary_adults_s4.txt
+
+  manipulate_dataset_adults_s4:
+    run: r:latest analysis/seasons/2019-20/processing/data_manipulation_adults_s4.R
+    needs: [generate_dataset_adults_s4]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2019-20/input_manipulated_adults_s4.arrow
+
+  # describe_adults_s4:
+  #   run: r:latest analysis/seasons/2019-20/report_adults_s4.R
+  #   needs: [generate_dataset_adults_s4, manipulate_dataset_adults_s4]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2019-20/descriptive_adults_s4.png
+  
+  generate_dataset_adults_s5:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2020-21/dataset_definition_adults_s5.py
+        --output output/seasons/2020-21/input_adults_s5.arrow
+        --dummy-data-file analysis/seasons/2020-21/dummydata/dummyextract_adults_s5.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2020-21/input_adults_s5.arrow
+
+  # summarise_dataset_adults_s5:
+  #   run: python:latest analysis/seasons/2020-21/summarise_dataset_adults_s5.py
+  #   needs: [generate_dataset_adults_s5]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2020-21/summary_adults_s5.txt
+
+  manipulate_dataset_adults_s5:
+    run: r:latest analysis/seasons/2020-21/processing/data_manipulation_adults_s5.R
+    needs: [generate_dataset_adults_s5]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2020-21/input_manipulated_adults_s5.arrow
+
+  # describe_adults_s5:
+  #   run: r:latest analysis/seasons/2020-21/report_adults_s5.R
+  #   needs: [generate_dataset_adults_s5, manipulate_dataset_adults_s5]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2020-21/descriptive_adults_s5.png
+  
+  generate_dataset_adults_s6:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2021-22/dataset_definition_adults_s6.py
+        --output output/seasons/2021-22/input_adults_s6.arrow
+        --dummy-data-file analysis/seasons/2021-22/dummydata/dummyextract_adults_s6.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2021-22/input_adults_s6.arrow
+
+  # summarise_dataset_adults_s6:
+  #   run: python:latest analysis/seasons/2021-22/summarise_dataset_adults_s6.py
+  #   needs: [generate_dataset_adults_s6]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2021-22/summary_adults_s6.txt
+
+  manipulate_dataset_adults_s6:
+    run: r:latest analysis/seasons/2021-22/processing/data_manipulation_adults_s6.R
+    needs: [generate_dataset_adults_s6]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2021-22/input_manipulated_adults_s6.arrow
+
+  # describe_adults_s6:
+  #   run: r:latest analysis/seasons/2021-22/report_adults_s6.R
+  #   needs: [generate_dataset_adults_s6, manipulate_dataset_adults_s6]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2021-22/descriptive_adults_s6.png
+  
+  generate_dataset_adults_s7:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2022-23/dataset_definition_adults_s7.py
+        --output output/seasons/2022-23/input_adults_s7.arrow
+        --dummy-data-file analysis/seasons/2022-23/dummydata/dummyextract_adults_s7.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2022-23/input_adults_s7.arrow
+
+  # summarise_dataset_adults_s7:
+  #   run: python:latest analysis/seasons/2022-23/summarise_dataset_adults_s7.py
+  #   needs: [generate_dataset_adults_s7]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2022-23/summary_adults_s7.txt
+
+  manipulate_dataset_adults_s7:
+    run: r:latest analysis/seasons/2022-23/processing/data_manipulation_adults_s7.R
+    needs: [generate_dataset_adults_s7]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2022-23/input_manipulated_adults_s7.arrow
+
+  # describe_adults_s7:
+  #   run: r:latest analysis/seasons/2022-23/report_adults_s7.R
+  #   needs: [generate_dataset_adults_s7, manipulate_dataset_adults_s7]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2022-23/descriptive_adults_s7.png
         
 # Children and adolescents
 
@@ -50,12 +267,12 @@ actions:
       highly_sensitive:
         cohort: output/input_children_and_adolescents.arrow
 
-  summarise_dataset_children_and_adolescents:
-    run: python:latest analysis/summarise_dataset_children_and_adolescents.py
-    needs: [generate_dataset_children_and_adolescents]
-    outputs:
-      moderately_sensitive:
-        cohort: output/summary_children_and_adolescents.txt
+  # summarise_dataset_children_and_adolescents:
+  #   run: python:latest analysis/summarise_dataset_children_and_adolescents.py
+  #   needs: [generate_dataset_children_and_adolescents]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/summary_children_and_adolescents.txt
 
   manipulate_dataset_children_and_adolescents:
     run: r:latest analysis/processing/data_manipulation_children_and_adolescents.R
@@ -72,6 +289,223 @@ actions:
   #     moderately_sensitive:
   #       cohort: output/descriptive__children_and_adolescents.png
 
+  generate_dataset_children_and_adolescents_s1:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2016-17/dataset_definition_children_and_adolescents_s1.py
+        --output output/seasons/2016-17/input_children_and_adolescents_s1.arrow
+        --dummy-data-file analysis/seasons/2016-17/dummydata/dummyextract_children_and_adolescents_s1.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2016-17/input_children_and_adolescents_s1.arrow
+
+  # summarise_dataset_children_and_adolescents_s1:
+  #   run: python:latest analysis/seasons/2016-17/summarise_dataset_children_and_adolescents_s1.py
+  #   needs: [generate_dataset_children_and_adolescents_s1]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2016-17/summary_children_and_adolescents_s1.txt
+
+  manipulate_dataset_children_and_adolescents_s1:
+    run: r:latest analysis/seasons/2016-17/processing/data_manipulation_children_and_adolescents_s1.R
+    needs: [generate_dataset_children_and_adolescents_s1]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2016-17/input_manipulated_children_and_adolescents_s1.arrow
+
+  # describe_children_and_adolescents_s1:
+  #   run: r:latest analysis/seasons/2016-17/report_children_and_adolescents_s1.R
+  #   needs: [generate_dataset_children_and_adolescents_s1, manipulate_dataset_children_and_adolescents_s1]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2016-17/descriptive_children_and_adolescents_s1.png
+
+  generate_dataset_children_and_adolescents_s2:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2017-18/dataset_definition_children_and_adolescents_s2.py
+        --output output/seasons/2017-18/input_children_and_adolescents_s2.arrow
+        --dummy-data-file analysis/seasons/2017-18/dummydata/dummyextract_children_and_adolescents_s2.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2017-18/input_children_and_adolescents_s2.arrow
+
+  # summarise_dataset_children_and_adolescents_s2:
+  #   run: python:latest analysis/seasons/2017-18/summarise_dataset_children_and_adolescents_s2.py
+  #   needs: [generate_dataset_children_and_adolescents_s2]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2017-18/summary_children_and_adolescents_s2.txt
+
+  manipulate_dataset_children_and_adolescents_s2:
+    run: r:latest analysis/seasons/2017-18/processing/data_manipulation_children_and_adolescents_s2.R
+    needs: [generate_dataset_children_and_adolescents_s2]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2017-18/input_manipulated_children_and_adolescents_s2.arrow
+
+  # describe_children_and_adolescents_s2:
+  #   run: r:latest analysis/seasons/2017-18/report_children_and_adolescents_s2.R
+  #   needs: [generate_dataset_children_and_adolescents_s2, manipulate_dataset_children_and_adolescents_s2]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2017-18/descriptive_children_and_adolescents_s2.png
+  
+  generate_dataset_children_and_adolescents_s3:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2018-19/dataset_definition_children_and_adolescents_s3.py
+        --output output/seasons/2018-19/input_children_and_adolescents_s3.arrow
+        --dummy-data-file analysis/seasons/2018-19/dummydata/dummyextract_children_and_adolescents_s3.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2018-19/input_children_and_adolescents_s3.arrow
+
+  # summarise_dataset_children_and_adolescents_s3:
+  #   run: python:latest analysis/seasons/2018-19/summarise_dataset_children_and_adolescents_s3.py
+  #   needs: [generate_dataset_children_and_adolescents_s3]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2018-19/summary_children_and_adolescents_s3.txt
+
+  manipulate_dataset_children_and_adolescents_s3:
+    run: r:latest analysis/seasons/2018-19/processing/data_manipulation_children_and_adolescents_s3.R
+    needs: [generate_dataset_children_and_adolescents_s3]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2018-19/input_manipulated_children_and_adolescents_s3.arrow
+
+  # describe_children_and_adolescents_s3:
+  #   run: r:latest analysis/seasons/2018-19/report_children_and_adolescents_s3.R
+  #   needs: [generate_dataset_children_and_adolescents_s3, manipulate_dataset_children_and_adolescents_s3]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2018-19/descriptive_children_and_adolescents_s3.png
+  
+  generate_dataset_children_and_adolescents_s4:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2019-20/dataset_definition_children_and_adolescents_s4.py
+        --output output/seasons/2019-20/input_children_and_adolescents_s4.arrow
+        --dummy-data-file analysis/seasons/2019-20/dummydata/dummyextract_children_and_adolescents_s4.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2019-20/input_children_and_adolescents_s4.arrow
+
+  # summarise_dataset_children_and_adolescents_s4:
+  #   run: python:latest analysis/seasons/2019-20/summarise_dataset_children_and_adolescents_s4.py
+  #   needs: [generate_dataset_children_and_adolescents_s4]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2019-20/summary_children_and_adolescents_s4.txt
+
+  manipulate_dataset_children_and_adolescents_s4:
+    run: r:latest analysis/seasons/2019-20/processing/data_manipulation_children_and_adolescents_s4.R
+    needs: [generate_dataset_children_and_adolescents_s4]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2019-20/input_manipulated_children_and_adolescents_s4.arrow
+
+  # describe_children_and_adolescents_s4:
+  #   run: r:latest analysis/seasons/2019-20/report_children_and_adolescents_s4.R
+  #   needs: [generate_dataset_children_and_adolescents_s4, manipulate_dataset_children_and_adolescents_s4]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2019-20/descriptive_children_and_adolescents_s4.png
+  
+  generate_dataset_children_and_adolescents_s5:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2020-21/dataset_definition_children_and_adolescents_s5.py
+        --output output/seasons/2020-21/input_children_and_adolescents_s5.arrow
+        --dummy-data-file analysis/seasons/2020-21/dummydata/dummyextract_children_and_adolescents_s5.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2020-21/input_children_and_adolescents_s5.arrow
+
+  # summarise_dataset_children_and_adolescents_s5:
+  #   run: python:latest analysis/seasons/2020-21/summarise_dataset_children_and_adolescents_s5.py
+  #   needs: [generate_dataset_children_and_adolescents_s5]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2020-21/summary_children_and_adolescents_s5.txt
+
+  manipulate_dataset_children_and_adolescents_s5:
+    run: r:latest analysis/seasons/2020-21/processing/data_manipulation_children_and_adolescents_s5.R
+    needs: [generate_dataset_children_and_adolescents_s5]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2020-21/input_manipulated_children_and_adolescents_s5.arrow
+
+  # describe_children_and_adolescents_s5:
+  #   run: r:latest analysis/seasons/2020-21/report_children_and_adolescents_s5.R
+  #   needs: [generate_dataset_children_and_adolescents_s5, manipulate_dataset_children_and_adolescents_s5]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2020-21/descriptive_children_and_adolescents_s5.png
+  
+  generate_dataset_children_and_adolescents_s6:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2021-22/dataset_definition_children_and_adolescents_s6.py
+        --output output/seasons/2021-22/input_children_and_adolescents_s6.arrow
+        --dummy-data-file analysis/seasons/2021-22/dummydata/dummyextract_children_and_adolescents_s6.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2021-22/input_children_and_adolescents_s6.arrow
+
+  # summarise_dataset_children_and_adolescents_s6:
+  #   run: python:latest analysis/seasons/2021-22/summarise_dataset_children_and_adolescents_s6.py
+  #   needs: [generate_dataset_children_and_adolescents_s6]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2021-22/summary_children_and_adolescents_s6.txt
+
+  manipulate_dataset_children_and_adolescents_s6:
+    run: r:latest analysis/seasons/2021-22/processing/data_manipulation_children_and_adolescents_s6.R
+    needs: [generate_dataset_children_and_adolescents_s6]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2021-22/input_manipulated_children_and_adolescents_s6.arrow
+
+  # describe_children_and_adolescents_s6:
+  #   run: r:latest analysis/seasons/2021-22/report_children_and_adolescents_s6.R
+  #   needs: [generate_dataset_children_and_adolescents_s6, manipulate_dataset_children_and_adolescents_s6]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2021-22/descriptive_children_and_adolescents_s6.png
+  
+  generate_dataset_children_and_adolescents_s7:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2022-23/dataset_definition_children_and_adolescents_s7.py
+        --output output/seasons/2022-23/input_children_and_adolescents_s7.arrow
+        --dummy-data-file analysis/seasons/2022-23/dummydata/dummyextract_children_and_adolescents_s7.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2022-23/input_children_and_adolescents_s7.arrow
+
+  # summarise_dataset_children_and_adolescents_s7:
+  #   run: python:latest analysis/seasons/2022-23/summarise_dataset_children_and_adolescents_s7.py
+  #   needs: [generate_dataset_children_and_adolescents_s7]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2022-23/summary_children_and_adolescents_s7.txt
+
+  manipulate_dataset_children_and_adolescents_s7:
+    run: r:latest analysis/seasons/2022-23/processing/data_manipulation_children_and_adolescents_s7.R
+    needs: [generate_dataset_children_and_adolescents_s7]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2022-23/input_manipulated_children_and_adolescents_s7.arrow
+
+  # describe_children_and_adolescents_s7:
+  #   run: r:latest analysis/seasons/2022-23/report_children_and_adolescents_s7.R
+  #   needs: [generate_dataset_children_and_adolescents_s7, manipulate_dataset_children_and_adolescents_s7]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2022-23/descriptive_children_and_adolescents_s7.png
+
 # Infants
 
   generate_dataset_infants:
@@ -84,12 +518,12 @@ actions:
       highly_sensitive:
         cohort: output/input_infants.arrow
 
-  summarise_dataset_infants:
-    run: python:latest analysis/summarise_dataset_infants.py
-    needs: [generate_dataset_infants]
-    outputs:
-      moderately_sensitive:
-        cohort: output/summary_infants.txt
+  # summarise_dataset_infants:
+  #   run: python:latest analysis/summarise_dataset_infants.py
+  #   needs: [generate_dataset_infants]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/summary_infants.txt
 
   manipulate_dataset_infants:
     run: r:latest analysis/processing/data_manipulation_infants.R
@@ -98,12 +532,229 @@ actions:
       highly_sensitive:
         cohort: output/input_manipulated_infants.arrow
 
-  describe_infants:
-    run: r:latest analysis/report_infants.R
-    needs: [generate_dataset_infants, manipulate_dataset_infants]
+  # describe_infants:
+  #   run: r:latest analysis/report_infants.R
+  #   needs: [generate_dataset_infants, manipulate_dataset_infants]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/descriptive_infants.png
+
+  generate_dataset_infants_s1:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2016-17/dataset_definition_infants_s1.py
+        --output output/seasons/2016-17/input_infants_s1.arrow
+        --dummy-data-file analysis/seasons/2016-17/dummydata/dummyextract_infants_s1.arrow
     outputs:
-      moderately_sensitive:
-        cohort: output/descriptive_infants.png
+      highly_sensitive:
+        cohort: output/seasons/2016-17/input_infants_s1.arrow
+
+  # summarise_dataset_infants_s1:
+  #   run: python:latest analysis/seasons/2016-17/summarise_dataset_infants_s1.py
+  #   needs: [generate_dataset_infants_s1]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2016-17/summary_infants_s1.txt
+
+  manipulate_dataset_infants_s1:
+    run: r:latest analysis/seasons/2016-17/processing/data_manipulation_infants_s1.R
+    needs: [generate_dataset_infants_s1]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2016-17/input_manipulated_infants_s1.arrow
+
+  # describe_infants_s1:
+  #   run: r:latest analysis/seasons/2016-17/report_infants_s1.R
+  #   needs: [generate_dataset_infants_s1, manipulate_dataset_infants_s1]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2016-17/descriptive_infants_s1.png
+
+  generate_dataset_infants_s2:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2017-18/dataset_definition_infants_s2.py
+        --output output/seasons/2017-18/input_infants_s2.arrow
+        --dummy-data-file analysis/seasons/2017-18/dummydata/dummyextract_infants_s2.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2017-18/input_infants_s2.arrow
+
+  # summarise_dataset_infants_s2:
+  #   run: python:latest analysis/seasons/2017-18/summarise_dataset_infants_s2.py
+  #   needs: [generate_dataset_infants_s2]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2017-18/summary_infants_s2.txt
+
+  manipulate_dataset_infants_s2:
+    run: r:latest analysis/seasons/2017-18/processing/data_manipulation_infants_s2.R
+    needs: [generate_dataset_infants_s2]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2017-18/input_manipulated_infants_s2.arrow
+
+  # describe_infants_s2:
+  #   run: r:latest analysis/seasons/2017-18/report_infants_s2.R
+  #   needs: [generate_dataset_infants_s2, manipulate_dataset_infants_s2]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2017-18/descriptive_infants_s2.png
+  
+  generate_dataset_infants_s3:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2018-19/dataset_definition_infants_s3.py
+        --output output/seasons/2018-19/input_infants_s3.arrow
+        --dummy-data-file analysis/seasons/2018-19/dummydata/dummyextract_infants_s3.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2018-19/input_infants_s3.arrow
+
+  # summarise_dataset_infants_s3:
+  #   run: python:latest analysis/seasons/2018-19/summarise_dataset_infants_s3.py
+  #   needs: [generate_dataset_infants_s3]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2018-19/summary_infants_s3.txt
+
+  manipulate_dataset_infants_s3:
+    run: r:latest analysis/seasons/2018-19/processing/data_manipulation_infants_s3.R
+    needs: [generate_dataset_infants_s3]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2018-19/input_manipulated_infants_s3.arrow
+
+  # describe_infants_s3:
+  #   run: r:latest analysis/seasons/2018-19/report_infants_s3.R
+  #   needs: [generate_dataset_infants_s3, manipulate_dataset_infants_s3]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2018-19/descriptive_infants_s3.png
+  
+  generate_dataset_infants_s4:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2019-20/dataset_definition_infants_s4.py
+        --output output/seasons/2019-20/input_infants_s4.arrow
+        --dummy-data-file analysis/seasons/2019-20/dummydata/dummyextract_infants_s4.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2019-20/input_infants_s4.arrow
+
+  # summarise_dataset_infants_s4:
+  #   run: python:latest analysis/seasons/2019-20/summarise_dataset_infants_s4.py
+  #   needs: [generate_dataset_infants_s4]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2019-20/summary_infants_s4.txt
+
+  manipulate_dataset_infants_s4:
+    run: r:latest analysis/seasons/2019-20/processing/data_manipulation_infants_s4.R
+    needs: [generate_dataset_infants_s4]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2019-20/input_manipulated_infants_s4.arrow
+
+  # describe_infants_s4:
+  #   run: r:latest analysis/seasons/2019-20/report_infants_s4.R
+  #   needs: [generate_dataset_infants_s4, manipulate_dataset_infants_s4]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2019-20/descriptive_infants_s4.png
+  
+  generate_dataset_infants_s5:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2020-21/dataset_definition_infants_s5.py
+        --output output/seasons/2020-21/input_infants_s5.arrow
+        --dummy-data-file analysis/seasons/2020-21/dummydata/dummyextract_infants_s5.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2020-21/input_infants_s5.arrow
+
+  # summarise_dataset_infants_s5:
+  #   run: python:latest analysis/seasons/2020-21/summarise_dataset_infants_s5.py
+  #   needs: [generate_dataset_infants_s5]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2020-21/summary_infants_s5.txt
+
+  manipulate_dataset_infants_s5:
+    run: r:latest analysis/seasons/2020-21/processing/data_manipulation_infants_s5.R
+    needs: [generate_dataset_infants_s5]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2020-21/input_manipulated_infants_s5.arrow
+
+  # describe_infants_s5:
+  #   run: r:latest analysis/seasons/2020-21/report_infants_s5.R
+  #   needs: [generate_dataset_infants_s5, manipulate_dataset_infants_s5]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2020-21/descriptive_infants_s5.png
+  
+  generate_dataset_infants_s6:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2021-22/dataset_definition_infants_s6.py
+        --output output/seasons/2021-22/input_infants_s6.arrow
+        --dummy-data-file analysis/seasons/2021-22/dummydata/dummyextract_infants_s6.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2021-22/input_infants_s6.arrow
+
+  # summarise_dataset_infants_s6:
+  #   run: python:latest analysis/seasons/2021-22/summarise_dataset_infants_s6.py
+  #   needs: [generate_dataset_infants_s6]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2021-22/summary_infants_s6.txt
+
+  manipulate_dataset_infants_s6:
+    run: r:latest analysis/seasons/2021-22/processing/data_manipulation_infants_s6.R
+    needs: [generate_dataset_infants_s6]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2021-22/input_manipulated_infants_s6.arrow
+
+  # describe_infants_s6:
+  #   run: r:latest analysis/seasons/2021-22/report_infants_s6.R
+  #   needs: [generate_dataset_infants_s6, manipulate_dataset_infants_s6]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2021-22/descriptive_infants_s6.png
+  
+  generate_dataset_infants_s7:
+    run: >
+      ehrql:v1
+        generate-dataset analysis/seasons/2022-23/dataset_definition_infants_s7.py
+        --output output/seasons/2022-23/input_infants_s7.arrow
+        --dummy-data-file analysis/seasons/2022-23/dummydata/dummyextract_infants_s7.arrow
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2022-23/input_infants_s7.arrow
+
+  # summarise_dataset_infants_s7:
+  #   run: python:latest analysis/seasons/2022-23/summarise_dataset_infants_s7.py
+  #   needs: [generate_dataset_infants_s7]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2022-23/summary_infants_s7.txt
+
+  manipulate_dataset_infants_s7:
+    run: r:latest analysis/seasons/2022-23/processing/data_manipulation_infants_s7.R
+    needs: [generate_dataset_infants_s7]
+    outputs:
+      highly_sensitive:
+        cohort: output/seasons/2022-23/input_manipulated_infants_s7.arrow
+
+  # describe_infants_s7:
+  #   run: r:latest analysis/seasons/2022-23/report_infants_s7.R
+  #   needs: [generate_dataset_infants_s7, manipulate_dataset_infants_s7]
+  #   outputs:
+  #     moderately_sensitive:
+  #       cohort: output/seasons/2022-23/descriptive_infants_s7.png
 
 # # Infants Subgroup
 # 
@@ -117,12 +768,12 @@ actions:
 #       highly_sensitive:
 #         cohort: output/input_infants_subgroup.arrow
 # 
-#   summarise_dataset_infants_subgroup:
-#     run: python:latest analysis/summarise_dataset_infants_subgroup.py
-#     needs: [generate_dataset_infants_subgroup]
-#     outputs:
-#       moderately_sensitive:
-#         cohort: output/summary_infants_subgroup.txt
+#   # summarise_dataset_infants_subgroup:
+#   #   run: python:latest analysis/summarise_dataset_infants_subgroup.py
+#   #   needs: [generate_dataset_infants_subgroup]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/summary_infants_subgroup.txt
 # 
 #   manipulate_dataset_infants_subgroup:
 #     run: r:latest analysis/processing/data_manipulation_infants_subgroup.R
@@ -137,3 +788,220 @@ actions:
 #   #   outputs:
 #   #     moderately_sensitive:
 #   #       cohort: output/descriptive_infants_subgroup.png
+# 
+#   generate_dataset_infants_subgroup_s1:
+#     run: >
+#       ehrql:v1
+#         generate-dataset analysis/seasons/2016-17/dataset_definition_infants_subgroup_s1.py
+#         --output output/seasons/2016-17/input_infants_subgroup_s1.arrow
+#         --dummy-data-file analysis/seasons/2016-17/dummydata/dummyextract_infants_subgroup_s1.arrow
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2016-17/input_infants_subgroup_s1.arrow
+# 
+#   # summarise_dataset_infants_subgroup_s1:
+#   #   run: python:latest analysis/seasons/2016-17/summarise_dataset_infants_subgroup_s1.py
+#   #   needs: [generate_dataset_infants_subgroup_s1]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2016-17/summary_infants_subgroup_s1.txt
+# 
+#   manipulate_dataset_infants_subgroup_s1:
+#     run: r:latest analysis/seasons/2016-17/processing/data_manipulation_infants_subgroup_s1.R
+#     needs: [generate_dataset_infants_subgroup_s1]
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2016-17/input_manipulated_infants_subgroup_s1.arrow
+# 
+#   # describe_infants_subgroup_s1:
+#   #   run: r:latest analysis/seasons/2016-17/report_infants_subgroup_s1.R
+#   #   needs: [generate_dataset_infants_subgroup_s1, manipulate_dataset_infants_subgroup_s1]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2016-17/descriptive_infants_subgroup_s1.png
+# 
+#   generate_dataset_infants_subgroup_s2:
+#     run: >
+#       ehrql:v1
+#         generate-dataset analysis/seasons/2017-18/dataset_definition_infants_subgroup_s2.py
+#         --output output/seasons/2017-18/input_infants_subgroup_s2.arrow
+#         --dummy-data-file analysis/seasons/2017-18/dummydata/dummyextract_infants_subgroup_s2.arrow
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2017-18/input_infants_subgroup_s2.arrow
+# 
+#   # summarise_dataset_infants_subgroup_s2:
+#   #   run: python:latest analysis/seasons/2017-18/summarise_dataset_infants_subgroup_s2.py
+#   #   needs: [generate_dataset_infants_subgroup_s2]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2017-18/summary_infants_subgroup_s2.txt
+# 
+#   manipulate_dataset_infants_subgroup_s2:
+#     run: r:latest analysis/seasons/2017-18/processing/data_manipulation_infants_subgroup_s2.R
+#     needs: [generate_dataset_infants_subgroup_s2]
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2017-18/input_manipulated_infants_subgroup_s2.arrow
+# 
+#   # describe_infants_subgroup_s2:
+#   #   run: r:latest analysis/seasons/2017-18/report_infants_subgroup_s2.R
+#   #   needs: [generate_dataset_infants_subgroup_s2, manipulate_dataset_infants_subgroup_s2]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2017-18/descriptive_infants_subgroup_s2.png
+#   
+#   generate_dataset_infants_subgroup_s3:
+#     run: >
+#       ehrql:v1
+#         generate-dataset analysis/seasons/2018-19/dataset_definition_infants_subgroup_s3.py
+#         --output output/seasons/2018-19/input_infants_subgroup_s3.arrow
+#         --dummy-data-file analysis/seasons/2018-19/dummydata/dummyextract_infants_subgroup_s3.arrow
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2018-19/input_infants_subgroup_s3.arrow
+# 
+#   # summarise_dataset_infants_subgroup_s3:
+#   #   run: python:latest analysis/seasons/2018-19/summarise_dataset_infants_subgroup_s3.py
+#   #   needs: [generate_dataset_infants_subgroup_s3]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2018-19/summary_infants_subgroup_s3.txt
+# 
+#   manipulate_dataset_infants_subgroup_s3:
+#     run: r:latest analysis/seasons/2018-19/processing/data_manipulation_infants_subgroup_s3.R
+#     needs: [generate_dataset_infants_subgroup_s3]
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2018-19/input_manipulated_infants_subgroup_s3.arrow
+# 
+#   # describe_infants_subgroup_s3:
+#   #   run: r:latest analysis/seasons/2018-19/report_infants_subgroup_s3.R
+#   #   needs: [generate_dataset_infants_subgroup_s3, manipulate_dataset_infants_subgroup_s3]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2018-19/descriptive_infants_subgroup_s3.png
+#   
+#   generate_dataset_infants_subgroup_s4:
+#     run: >
+#       ehrql:v1
+#         generate-dataset analysis/seasons/2019-20/dataset_definition_infants_subgroup_s4.py
+#         --output output/seasons/2019-20/input_infants_subgroup_s4.arrow
+#         --dummy-data-file analysis/seasons/2019-20/dummydata/dummyextract_infants_subgroup_s4.arrow
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2019-20/input_infants_subgroup_s4.arrow
+# 
+#   # summarise_dataset_infants_subgroup_s4:
+#   #   run: python:latest analysis/seasons/2019-20/summarise_dataset_infants_subgroup_s4.py
+#   #   needs: [generate_dataset_infants_subgroup_s4]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2019-20/summary_infants_subgroup_s4.txt
+# 
+#   manipulate_dataset_infants_subgroup_s4:
+#     run: r:latest analysis/seasons/2019-20/processing/data_manipulation_infants_subgroup_s4.R
+#     needs: [generate_dataset_infants_subgroup_s4]
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2019-20/input_manipulated_infants_subgroup_s4.arrow
+# 
+#   # describe_infants_subgroup_s4:
+#   #   run: r:latest analysis/seasons/2019-20/report_infants_subgroup_s4.R
+#   #   needs: [generate_dataset_infants_subgroup_s4, manipulate_dataset_infants_subgroup_s4]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2019-20/descriptive_infants_subgroup_s4.png
+#   
+#   generate_dataset_infants_subgroup_s5:
+#     run: >
+#       ehrql:v1
+#         generate-dataset analysis/seasons/2020-21/dataset_definition_infants_subgroup_s5.py
+#         --output output/seasons/2020-21/input_infants_subgroup_s5.arrow
+#         --dummy-data-file analysis/seasons/2020-21/dummydata/dummyextract_infants_subgroup_s5.arrow
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2020-21/input_infants_subgroup_s5.arrow
+# 
+#   # summarise_dataset_infants_subgroup_s5:
+#   #   run: python:latest analysis/seasons/2020-21/summarise_dataset_infants_subgroup_s5.py
+#   #   needs: [generate_dataset_infants_subgroup_s5]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2020-21/summary_infants_subgroup_s5.txt
+# 
+#   manipulate_dataset_infants_subgroup_s5:
+#     run: r:latest analysis/seasons/2020-21/processing/data_manipulation_infants_subgroup_s5.R
+#     needs: [generate_dataset_infants_subgroup_s5]
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2020-21/input_manipulated_infants_subgroup_s5.arrow
+# 
+#   # describe_infants_subgroup_s5:
+#   #   run: r:latest analysis/seasons/2020-21/report_infants_subgroup_s5.R
+#   #   needs: [generate_dataset_infants_subgroup_s5, manipulate_dataset_infants_subgroup_s5]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2020-21/descriptive_infants_subgroup_s5.png
+#   
+#   generate_dataset_infants_subgroup_s6:
+#     run: >
+#       ehrql:v1
+#         generate-dataset analysis/seasons/2021-22/dataset_definition_infants_subgroup_s6.py
+#         --output output/seasons/2021-22/input_infants_subgroup_s6.arrow
+#         --dummy-data-file analysis/seasons/2021-22/dummydata/dummyextract_infants_subgroup_s6.arrow
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2021-22/input_infants_subgroup_s6.arrow
+# 
+#   # summarise_dataset_infants_subgroup_s6:
+#   #   run: python:latest analysis/seasons/2021-22/summarise_dataset_infants_subgroup_s6.py
+#   #   needs: [generate_dataset_infants_subgroup_s6]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2021-22/summary_infants_subgroup_s6.txt
+# 
+#   manipulate_dataset_infants_subgroup_s6:
+#     run: r:latest analysis/seasons/2021-22/processing/data_manipulation_infants_subgroup_s6.R
+#     needs: [generate_dataset_infants_subgroup_s6]
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2021-22/input_manipulated_infants_subgroup_s6.arrow
+# 
+#   # describe_infants_subgroup_s6:
+#   #   run: r:latest analysis/seasons/2021-22/report_infants_subgroup_s6.R
+#   #   needs: [generate_dataset_infants_subgroup_s6, manipulate_dataset_infants_subgroup_s6]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2021-22/descriptive_infants_subgroup_s6.png
+#   
+#   generate_dataset_infants_subgroup_s7:
+#     run: >
+#       ehrql:v1
+#         generate-dataset analysis/seasons/2022-23/dataset_definition_infants_subgroup_s7.py
+#         --output output/seasons/2022-23/input_infants_subgroup_s7.arrow
+#         --dummy-data-file analysis/seasons/2022-23/dummydata/dummyextract_infants_subgroup_s7.arrow
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2022-23/input_infants_subgroup_s7.arrow
+# 
+#   # summarise_dataset_infants_subgroup_s7:
+#   #   run: python:latest analysis/seasons/2022-23/summarise_dataset_infants_subgroup_s7.py
+#   #   needs: [generate_dataset_infants_subgroup_s7]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2022-23/summary_infants_subgroup_s7.txt
+# 
+#   manipulate_dataset_infants_subgroup_s7:
+#     run: r:latest analysis/seasons/2022-23/processing/data_manipulation_infants_subgroup_s7.R
+#     needs: [generate_dataset_infants_subgroup_s7]
+#     outputs:
+#       highly_sensitive:
+#         cohort: output/seasons/2022-23/input_manipulated_infants_subgroup_s7.arrow
+# 
+#   # describe_infants_subgroup_s7:
+#   #   run: r:latest analysis/seasons/2022-23/report_infants_subgroup_s7.R
+#   #   needs: [generate_dataset_infants_subgroup_s7, manipulate_dataset_infants_subgroup_s7]
+#   #   outputs:
+#   #     moderately_sensitive:
+#   #       cohort: output/seasons/2022-23/descriptive_infants_subgroup_s7.png

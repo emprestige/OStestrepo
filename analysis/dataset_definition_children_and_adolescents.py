@@ -1,4 +1,8 @@
-from ehrql import Dataset, case, when
+import json
+from pathlib import Path 
+
+from datetime import date, datetime
+from ehrql import Dataset, case, when, maximum_of, minimum_of
 from ehrql.tables.tpp import ( 
   patients, 
   medications,
@@ -14,16 +18,32 @@ import codelists
 
 dataset = Dataset()
 
-index_date = "2023-10-31"
+#######################################################################################
+# Import study dates defined in "./analysis/design/study-dates.R" script and then exported
+# to JSON
+#######################################################################################
+study_dates = json.loads(
+    Path("analysis/design/study-dates.json").read_text(),
+)
 
-age_at_start = patients.age_on("2016-03-01")
-age_at_end = patients.age_on(index_date)
+# Change these in ./analysis/design/study-dates.R if necessary
+study_start_date = study_dates["study_start_date"]
+study_end_date = study_dates["study_end_date"]
+index_date = study_start_date
+
+age_at_start = patients.age_on(study_start_date)
+age_at_end = patients.age_on(study_end_date)
 
 #get patients who are registered, have sex, age, and imd info
 registered_patients = (practice_registrations.for_patient_on(index_date)).exists_for_patient()
 is_female_or_male = patients.sex.is_in(["female", "male"])
 is_appropriate_age = (age_at_start <= 17) & (age_at_end >= 2)
-has_imd = addresses.for_patient_on(index_date).imd_rounded.is_not_null()
+has_imd = (addresses.for_patient_on(index_date).imd_rounded.is_not_null())
+
+# registrations = practice_registrations \
+#     .except_where(practice_registrations.start_date >= studystart_date) \
+#     .except_where(practice_registrations.end_date <= studyend_date)
+# registrations_number = registrations.count_for_patient()
 
 #define population
 dataset.define_population(
@@ -31,12 +51,34 @@ dataset.define_population(
   & is_female_or_male
   & is_appropriate_age
   & has_imd
+  #& (registrations_number == 1)
 )
 
 #registration, sex and age 
 dataset.registered = registered_patients
 dataset.sex = patients.sex
 dataset.age = patients.age_on(index_date)
+
+#define entrance and exit to study
+# registration = registrations \
+#     .sort_by(practice_registrations.start_date).last_for_patient()
+# dataset.patientstart_date = registrations.sort_by(practice_registrations.start_date).last_for_patient()
+# dataset.patientend_date = registrations.sort_by(practice_registrations.end_date).last_for_patient()
+practice_registration = (
+    # Filter to practice registrations which overlap with the study period
+    practice_registrations.where(practice_registrations.start_date < study_end_date)
+    .except_where(practice_registrations.end_date < study_start_date)
+    # Find the first overlapping registration
+    .sort_by(practice_registrations.start_date)
+    .first_for_patient()
+)
+
+dataset.patient_start_date = maximum_of(
+    practice_registration.start_date, study_start_date
+)
+dataset.patient_end_date = minimum_of(
+    practice_registration.end_date, study_end_date
+)
 
 #last_ons_death = ons_deaths.sort_by(ons_deaths.date).first_for_patient() #get death records for patients
 dataset.death_date = ons_deaths.date #date of death
